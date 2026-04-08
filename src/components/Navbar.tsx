@@ -22,33 +22,30 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "nav-blur shadow-lg shadow-background/50" : "bg-transparent"
+        scrolled ? "bg-background/90 backdrop-blur-lg border-b border-border/50" : "bg-transparent"
       }`}
     >
       <div className="section-container flex items-center justify-between h-16 md:h-20">
-        <a href="#" className="font-display text-xl font-bold gradient-text">
-          OB
+        <a href="#" className="font-serif text-xl text-foreground">
+          Omesh Bhujbal
         </a>
 
-        {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 relative group"
+              className="text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
               {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </div>
 
-        {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden flex flex-col gap-1.5 p-2"
@@ -59,20 +56,19 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          className="md:hidden nav-blur border-t border-border/30"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="md:hidden bg-background/95 backdrop-blur-lg border-t border-border/50"
         >
-          <div className="section-container py-4 flex flex-col gap-3">
+          <div className="section-container py-6 flex flex-col gap-4">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
               >
                 {item.label}
               </a>
