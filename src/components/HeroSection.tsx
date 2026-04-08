@@ -24,13 +24,12 @@ const HeroSection = () => {
     );
   }, []);
 
-  const tagline = "Architecting the future of enterprise technology through innovation, scale, and digital transformation.";
+  const tagline = "Senior Technology Leader driving digital transformation across Telecom, Retail, and Manufacturing with 22+ years of enterprise innovation.";
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <ParticleField />
 
-      {/* Gradient overlay */}
       <div className="absolute inset-0 z-[1]" style={{
         background: "radial-gradient(ellipse at 30% 50%, hsl(217 91% 60% / 0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, hsl(192 95% 55% / 0.06) 0%, transparent 50%)"
       }} />
@@ -75,7 +74,7 @@ const HeroSection = () => {
             transition={{ delay: 0.9, duration: 0.6 }}
             className="text-base md:text-lg text-muted-foreground mb-4"
           >
-            Digital Transformation Leader
+            Digital Transformation Leader · Retail · Telecom · Manufacturing
           </motion.p>
 
           <p ref={taglineRef} className="text-sm md:text-base text-muted-foreground/70 max-w-2xl mx-auto mb-12 leading-relaxed">
@@ -96,7 +95,7 @@ const HeroSection = () => {
               View Experience
             </a>
             <a
-              href="https://www.linkedin.com/in/omeshbhujbal/"
+              href="https://www.linkedin.com/in/omeshb/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline-glow"
@@ -106,13 +105,11 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
 
-        {/* Floating elements */}
         <div className="absolute top-1/4 left-[10%] w-20 h-20 rounded-full border border-primary/10 animate-float opacity-30" />
         <div className="absolute bottom-1/3 right-[15%] w-32 h-32 rounded-full border border-accent/10 animate-float opacity-20" style={{ animationDelay: "2s" }} />
         <div className="absolute top-1/3 right-[10%] w-2 h-2 rounded-full bg-primary/40 animate-pulse-glow" />
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -6,35 +6,35 @@ gsap.registerPlugin(ScrollTrigger);
 
 const skillCategories = [
   {
-    title: "AI / ML",
+    title: "Business Intelligence & Analytics",
     skills: [
-      { name: "Machine Learning", level: 85 },
-      { name: "Predictive Analytics", level: 90 },
-      { name: "NLP / Computer Vision", level: 75 },
+      { name: "Data Warehousing (Cognos)", level: 95 },
+      { name: "Advanced Analytics & Big Data", level: 90 },
+      { name: "Data Visualization (Tableau)", level: 88 },
     ],
   },
   {
-    title: "Big Data & Cloud",
+    title: "AI / ML & Campaign Management",
     skills: [
-      { name: "Data Engineering", level: 92 },
-      { name: "Cloud Architecture", level: 88 },
-      { name: "Real-time Analytics", level: 85 },
+      { name: "Machine Learning & AI", level: 85 },
+      { name: "SAS Campaign Management", level: 90 },
+      { name: "Customer Value Management", level: 92 },
     ],
   },
   {
-    title: "OSS / BSS",
+    title: "Telecom OSS / BSS",
     skills: [
       { name: "BSS Transformation", level: 95 },
-      { name: "Network Management", level: 88 },
-      { name: "Billing Systems", level: 90 },
+      { name: "Revenue Assurance & Fraud", level: 88 },
+      { name: "VoLTE / IMS Delivery", level: 85 },
     ],
   },
   {
-    title: "Enterprise IT",
+    title: "Digital & Enterprise IT",
     skills: [
-      { name: "Digital Strategy", level: 95 },
-      { name: "ERP Systems", level: 85 },
-      { name: "Cybersecurity", level: 80 },
+      { name: "Digital Transformation Strategy", level: 95 },
+      { name: "IT Operations & SLA Management", level: 90 },
+      { name: "Cloud & Managed Services", level: 85 },
     ],
   },
 ];
@@ -65,20 +65,14 @@ const SkillsSection = () => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(".skill-category", {
-        opacity: 0,
-        y: 40,
-        duration: 0.7,
-        stagger: 0.15,
+        opacity: 0, y: 40, duration: 0.7, stagger: 0.15,
         scrollTrigger: { trigger: ".skills-grid", start: "top 80%" },
       });
-
       const fills = sectionRef.current!.querySelectorAll(".skill-fill");
       fills.forEach((el) => {
         const level = (el as HTMLElement).dataset.level;
         gsap.to(el, {
-          width: `${level}%`,
-          duration: 1.2,
-          ease: "power3.out",
+          width: `${level}%`, duration: 1.2, ease: "power3.out",
           scrollTrigger: { trigger: el, start: "top 90%" },
         });
       });
@@ -95,7 +89,6 @@ const SkillsSection = () => {
             Technical <span className="gradient-text">Skills</span>
           </h2>
         </div>
-
         <div className="skills-grid grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {skillCategories.map((cat) => (
             <div key={cat.title} className="skill-category glass-card-hover p-6 md:p-8">
