@@ -4,59 +4,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const skillCategories = [
+const skillGroups = [
   {
     title: "Business Intelligence & Analytics",
-    skills: [
-      { name: "Data Warehousing (Cognos)", level: 95 },
-      { name: "Advanced Analytics & Big Data", level: 90 },
-      { name: "Data Visualization (Tableau)", level: 88 },
-    ],
+    items: ["Data Warehousing", "Cognos", "Big Data", "Tableau", "Advanced Analytics"],
   },
   {
-    title: "AI / ML & Campaign Management",
-    skills: [
-      { name: "Machine Learning & AI", level: 85 },
-      { name: "SAS Campaign Management", level: 90 },
-      { name: "Customer Value Management", level: 92 },
-    ],
+    title: "AI / ML & Automation",
+    items: ["Machine Learning", "SAS Campaign Management", "Customer Value Management", "Predictive Analytics"],
   },
   {
     title: "Telecom OSS / BSS",
-    skills: [
-      { name: "BSS Transformation", level: 95 },
-      { name: "Revenue Assurance & Fraud", level: 88 },
-      { name: "VoLTE / IMS Delivery", level: 85 },
-    ],
+    items: ["BSS Transformation", "Revenue Assurance", "Fraud Management", "VoLTE / IMS", "Number Portability"],
   },
   {
     title: "Digital & Enterprise IT",
-    skills: [
-      { name: "Digital Transformation Strategy", level: 95 },
-      { name: "IT Operations & SLA Management", level: 90 },
-      { name: "Cloud & Managed Services", level: 85 },
-    ],
+    items: ["Digital Strategy", "Cloud & Managed Services", "IT Operations", "SLA Management", "Mobile Payments"],
   },
 ];
-
-const SkillBar = ({ name, level }: { name: string; level: number }) => (
-  <div className="skill-bar mb-4 last:mb-0">
-    <div className="flex justify-between items-center mb-2">
-      <span className="text-sm text-foreground font-medium">{name}</span>
-      <span className="text-xs text-primary font-medium">{level}%</span>
-    </div>
-    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-      <div
-        className="skill-fill h-full rounded-full"
-        style={{
-          width: "0%",
-          background: "linear-gradient(90deg, hsl(217 91% 60%), hsl(192 95% 55%))",
-        }}
-        data-level={level}
-      />
-    </div>
-  </div>
-);
 
 const SkillsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -64,43 +29,40 @@ const SkillsSection = () => {
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".skill-category", {
-        opacity: 0, y: 40, duration: 0.7, stagger: 0.15,
-        scrollTrigger: { trigger: ".skills-grid", start: "top 80%" },
-      });
-      const fills = sectionRef.current!.querySelectorAll(".skill-fill");
-      fills.forEach((el) => {
-        const level = (el as HTMLElement).dataset.level;
-        gsap.to(el, {
-          width: `${level}%`, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 90%" },
-        });
+      gsap.from(".skill-group", {
+        opacity: 0, y: 30, duration: 0.6, stagger: 0.12, ease: "power3.out",
+        scrollTrigger: { trigger: ".skills-wrap", start: "top 80%" },
       });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-24 md:py-32 relative">
+    <section id="skills" ref={sectionRef} className="py-24 md:py-36">
       <div className="section-container">
-        <div className="text-center mb-16">
-          <p className="text-sm uppercase tracking-[0.2em] text-primary mb-4 font-medium">Expertise</p>
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground">
-            Technical <span className="gradient-text">Skills</span>
-          </h2>
-        </div>
-        <div className="skills-grid grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {skillCategories.map((cat) => (
-            <div key={cat.title} className="skill-category glass-card-hover p-6 md:p-8">
-              <h3 className="font-display text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                {cat.title}
-              </h3>
-              {cat.skills.map((skill) => (
-                <SkillBar key={skill.name} {...skill} />
-              ))}
-            </div>
-          ))}
+        <div className="grid md:grid-cols-12 gap-12 md:gap-16">
+          <div className="md:col-span-4">
+            <p className="section-label">Expertise</p>
+            <h2 className="section-title">Skills</h2>
+          </div>
+
+          <div className="md:col-span-8 skills-wrap grid sm:grid-cols-2 gap-10">
+            {skillGroups.map((group) => (
+              <div key={group.title} className="skill-group">
+                <h3 className="font-serif text-lg text-foreground mb-4">{group.title}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="text-xs px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

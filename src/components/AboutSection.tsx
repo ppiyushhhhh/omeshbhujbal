@@ -6,81 +6,72 @@ import headshot from "@/assets/headshot.jfif";
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: "22+", label: "Years of Experience", icon: "⚡" },
-  { value: "400M+", label: "Customers Impacted", icon: "🌍" },
-  { value: "Global", label: "Multi-country Delivery", icon: "🏢" },
+  { value: "22+", label: "Years" },
+  { value: "400M+", label: "Users Impacted" },
+  { value: "Global", label: "Delivery" },
 ];
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".about-text", {
-        opacity: 0, x: -60, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-      gsap.from(".about-photo", {
-        opacity: 0, scale: 0.9, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-      gsap.from(".stat-card", {
+      gsap.from(".about-reveal", {
         opacity: 0, y: 40, duration: 0.8, stagger: 0.15, ease: "power3.out",
-        scrollTrigger: { trigger: cardsRef.current, start: "top 80%" },
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-24 md:py-32 relative">
+    <section id="about" ref={sectionRef} className="py-24 md:py-36">
       <div className="section-container">
-        {/* Photo + Intro */}
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 mb-16">
-          <div className="about-photo relative shrink-0">
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden gradient-border glow-effect">
+        <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
+          {/* Left column */}
+          <div className="md:col-span-4 about-reveal">
+            <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden mb-8 grayscale hover:grayscale-0 transition-all duration-700">
               <img
                 src={headshot}
-                alt="Omesh Bhujbal – Chief Technology Officer"
+                alt="Omesh Bhujbal"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
-          </div>
-
-          <div className="about-text text-center md:text-left">
-            <p className="text-sm uppercase tracking-[0.2em] text-primary mb-4 font-medium">About</p>
-            <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Driving Digital
-              <span className="gradient-text"> Transformation</span>
-            </h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Senior Technology Leader with over 22 years' experience across leading Indian & multi-national companies,
-              including 16 years in telecom technology with Vodafone Idea Ltd., with additional experience in
-              Manufacturing, Automotive & Management Consulting.
-            </p>
-            <p className="text-muted-foreground/70 leading-relaxed">
-              Partnered with CXOs & business leaders to create technology roadmaps delivering innovative,
-              cost-effective, highly scalable solutions with tangible business value across multi-partner environments.
-            </p>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div ref={cardsRef} className="grid sm:grid-cols-3 gap-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="stat-card glass-card-hover p-6 flex items-center gap-6">
-              <div className="text-3xl w-14 h-14 flex items-center justify-center rounded-xl bg-primary/10">
-                {stat.icon}
-              </div>
-              <div>
-                <p className="font-display text-3xl md:text-4xl font-bold gradient-text">{stat.value}</p>
-                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-              </div>
+            <div className="flex gap-10">
+              {stats.map((s) => (
+                <div key={s.label}>
+                  <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Right column */}
+          <div className="md:col-span-8 about-reveal">
+            <p className="section-label">About</p>
+            <h2 className="section-title mb-8">
+              Driving digital transformation at enterprise scale
+            </h2>
+            <div className="space-y-5 text-muted-foreground leading-relaxed">
+              <p>
+                Senior Technology Leader with over 22 years' experience across leading Indian & multi-national companies,
+                including 16 years in telecom technology with Vodafone Idea Ltd., with additional experience in
+                Manufacturing, Automotive & Management Consulting.
+              </p>
+              <p>
+                Extensive experience across Business Intelligence, Analytics, Big Data, Digital Services,
+                Campaign Management, Revenue Assurance, and Telecom OSS/BSS. Successfully led multiple high-budget,
+                complex IT transformation initiatives in multi-stakeholder, multi-partner environments.
+              </p>
+              <p>
+                Partnered with CXOs & business leaders to create technology roadmaps delivering innovative,
+                cost-effective, highly scalable solutions with tangible business value.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

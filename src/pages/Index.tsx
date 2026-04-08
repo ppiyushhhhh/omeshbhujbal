@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import CursorGlow from "@/components/CursorGlow";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
@@ -13,7 +12,6 @@ const ConnectSection = lazy(() => import("@/components/ConnectSection"));
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <CursorGlow />
       <Navbar />
       <HeroSection />
       <Suspense fallback={null}>
