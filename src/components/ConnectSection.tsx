@@ -11,10 +11,7 @@ const ConnectSection = () => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(".connect-content", {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: "power3.out",
+        opacity: 0, y: 40, duration: 0.8, ease: "power3.out",
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
       });
     }, sectionRef);
@@ -30,23 +27,20 @@ const ConnectSection = () => {
             background: "linear-gradient(135deg, hsl(217 91% 60% / 0.15), hsl(192 95% 55% / 0.1), hsl(217 91% 60% / 0.05))",
           }}
         >
-          {/* Glow effect */}
           <div className="absolute inset-0 rounded-3xl gradient-border" />
 
-          <p className="text-sm uppercase tracking-[0.2em] text-primary mb-4 font-medium relative z-10">
-            Let's Connect
-          </p>
+          <p className="text-sm uppercase tracking-[0.2em] text-primary mb-4 font-medium relative z-10">Let's Connect</p>
           <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6 relative z-10">
             Ready to <span className="gradient-text">Collaborate?</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed relative z-10">
-            I'm always open to discussing technology strategy, digital transformation,
-            and innovative solutions for enterprise challenges.
+            Open to discussing technology strategy, digital transformation, and innovative solutions
+            for enterprise challenges across retail, telecom, and beyond.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
             <a
-              href="https://www.linkedin.com/in/omeshbhujbal/"
+              href="https://www.linkedin.com/in/omeshb/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary-glow"
@@ -60,7 +54,6 @@ const ConnectSection = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="section-container mt-20 pt-8 border-t border-border/30">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Omesh Bhujbal. All rights reserved.</p>

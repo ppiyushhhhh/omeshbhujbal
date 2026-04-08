@@ -7,31 +7,43 @@ gsap.registerPlugin(ScrollTrigger);
 const achievements = [
   {
     metric: "30%",
-    title: "Cost Reduction",
-    description: "Achieved significant operational cost savings through cloud migration and process automation across enterprise systems.",
+    title: "Cost Reduction Target",
+    description: "Targeted 30% operational cost reduction through CVM transformation leveraging AI, ML, and digital technologies for 400M customers.",
     icon: "📉",
   },
   {
-    metric: "400M+",
-    title: "Users Handled",
-    description: "Managed technology infrastructure supporting over 400 million telecom subscribers with 99.9% uptime.",
+    metric: "400M",
+    title: "Customers Managed",
+    description: "Led CVM transformation for 400 million telecom customers — the largest telco CVM implementation — with omni-channel platform delivery.",
     icon: "👥",
   },
   {
-    metric: "AI/ML",
-    title: "Transformations",
-    description: "Pioneered AI and machine learning adoption for predictive analytics, customer insights, and network optimization.",
-    icon: "🤖",
+    metric: "2000+",
+    title: "KPI MIS Rollout",
+    description: "Rolled out 'One MIS' transformation with 2000 critical KPIs across the organization via unified DWH, Big Data, and performance dashboards.",
+    icon: "📊",
   },
   {
-    metric: "2000+",
-    title: "KPI BI System",
-    description: "Built and managed enterprise BI platform tracking 2000+ KPIs for real-time business intelligence and decision making.",
-    icon: "📊",
+    metric: "4x",
+    title: "Online Recharge Growth",
+    description: "Drove 4x growth in online recharge transactions and 1M number portability requests through digital services transformation.",
+    icon: "🚀",
+  },
+  {
+    metric: "₹320M",
+    title: "Revenue Uplift",
+    description: "Achieved ₹320M annual revenue increase in VAS subscriptions through CX and technical improvements via Six Sigma initiatives.",
+    icon: "💰",
+  },
+  {
+    metric: "15%",
+    title: "Under Budget Delivery",
+    description: "Delivered fastest BSS transformation for IMS VoLTE launch — completed in 3 months with 4 partners, 15% under budget.",
+    icon: "⚡",
   },
 ];
 
-const AchievementCard = ({ achievement, index }: { achievement: typeof achievements[0]; index: number }) => {
+const AchievementCard = ({ achievement }: { achievement: typeof achievements[0] }) => {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -71,11 +83,7 @@ const AchievementsSection = () => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(".achievement-card", {
-        opacity: 0,
-        y: 50,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: "power3.out",
+        opacity: 0, y: 50, duration: 0.7, stagger: 0.12, ease: "power3.out",
         scrollTrigger: { trigger: ".achievements-grid", start: "top 80%" },
       });
     }, sectionRef);
@@ -91,10 +99,9 @@ const AchievementsSection = () => {
             Key <span className="gradient-text">Achievements</span>
           </h2>
         </div>
-
-        <div className="achievements-grid grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="achievements-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {achievements.map((a, i) => (
-            <AchievementCard key={i} achievement={a} index={i} />
+            <AchievementCard key={i} achievement={a} />
           ))}
         </div>
       </div>

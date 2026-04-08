@@ -6,14 +6,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 const education = [
   {
-    degree: "MBA – Systems & Operations",
-    school: "Symbiosis International University",
-    year: "2006",
+    degree: "Master of Science – Information Management",
+    school: "Syracuse University",
+    year: "2000 – 2002",
   },
   {
-    degree: "B.E. – Electronics & Telecommunication",
+    degree: "B.E. – Mechanical Engineering",
     school: "University of Pune",
-    year: "2001",
+    year: "1995 – 1999",
   },
 ];
 
@@ -24,11 +24,7 @@ const EducationSection = () => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(".edu-card", {
-        opacity: 0,
-        y: 30,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: "power3.out",
+        opacity: 0, y: 30, duration: 0.7, stagger: 0.15, ease: "power3.out",
         scrollTrigger: { trigger: ".edu-grid", start: "top 85%" },
       });
     }, sectionRef);
@@ -44,16 +40,13 @@ const EducationSection = () => {
             <span className="gradient-text">Education</span>
           </h2>
         </div>
-
         <div className="edu-grid grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {education.map((edu) => (
             <div key={edu.degree} className="edu-card glass-card-hover p-8 text-center">
               <span className="text-xs text-primary font-medium tracking-wider uppercase bg-primary/10 px-3 py-1 rounded-full">
                 {edu.year}
               </span>
-              <h3 className="font-display text-lg font-semibold text-foreground mt-4 mb-2">
-                {edu.degree}
-              </h3>
+              <h3 className="font-display text-lg font-semibold text-foreground mt-4 mb-2">{edu.degree}</h3>
               <p className="text-sm text-muted-foreground">{edu.school}</p>
             </div>
           ))}
