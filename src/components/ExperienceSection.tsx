@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
 import geLogo from "@/assets/logos/ge.jfif";
@@ -84,6 +85,83 @@ const getInitials = (name: string) =>
     .join("")
     .toUpperCase();
 
+type Experience = (typeof experiences)[number];
+
+const ExperienceRow = ({ exp, isLast }: { exp: Experience; isLast: boolean }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const mvX = useMotionValue(0.5);
+  const mvY = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(mvY, [0, 1], [2.5, -2.5]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mvX, [0, 1], [-2.5, 2.5]), { stiffness: 200, damping: 20 });
+  const glowX = useTransform(mvX, (v) => `${v * 100}%`);
+  const glowY = useTransform(mvY, (v) => `${v * 100}%`);
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    mvX.set((e.clientX - rect.left) / rect.width);
+    mvY.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleLeave = () => {
+    mvX.set(0.5);
+    mvY.set(0.5);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 250, damping: 22 }}
+      style={{ rotateX, rotateY, transformPerspective: 900, transformStyle: "preserve-3d" }}
+      className={`exp-item group relative py-6 flex gap-4 sm:gap-5 ${
+        !isLast ? "border-b border-border" : ""
+      } -mx-4 sm:-mx-5 px-4 sm:px-5 rounded-xl will-change-transform`}
+    >
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: useTransform(
+            [glowX, glowY] as any,
+            ([x, y]: any) =>
+              `radial-gradient(380px circle at ${x} ${y}, hsl(var(--foreground) / 0.07), transparent 60%)`
+          ),
+        }}
+      />
+
+      {exp.logo && (
+        <div
+          className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center relative z-10 transition-shadow duration-300 group-hover:shadow-md"
+          style={{ transform: "translateZ(20px)" }}
+        >
+          <img
+            src={exp.logo}
+            alt={`${exp.company} logo`}
+            className="w-full h-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      )}
+
+      <div className="flex-1 min-w-0 relative z-10" style={{ transform: "translateZ(10px)" }}>
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
+          <h3 className="font-serif text-lg md:text-xl text-foreground transition-colors duration-300">
+            {exp.title}
+          </h3>
+          <span className="text-xs text-muted-foreground font-sans tracking-wider shrink-0">
+            {exp.period}
+          </span>
+        </div>
+        <p className="text-sm font-medium text-foreground/60 mb-2">{exp.company}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed">{exp.description}</p>
+      </div>
+    </motion.div>
+  );
+};
+
 const ExperienceSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -110,34 +188,7 @@ const ExperienceSection = () => {
           <div className="md:col-span-8 exp-list">
             <div className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm px-6 sm:px-8 shadow-sm">
               {experiences.map((exp, i) => (
-                <div
-                  key={i}
-                  className="exp-item group py-6 border-b border-border last:border-0 flex gap-4 sm:gap-5"
-                >
-                  {exp.logo && (
-                    <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center">
-                      <img
-                        src={exp.logo}
-                        alt={`${exp.company} logo`}
-                        className="w-full h-full object-contain"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
-                      <h3 className="font-serif text-lg md:text-xl text-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">
-                        {exp.title}
-                      </h3>
-                      <span className="text-xs text-muted-foreground font-sans tracking-wider shrink-0">
-                        {exp.period}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium text-foreground/60 mb-2">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{exp.description}</p>
-                  </div>
-                </div>
+                <ExperienceRow key={i} exp={exp} isLast={i === experiences.length - 1} />
               ))}
             </div>
           </div>
