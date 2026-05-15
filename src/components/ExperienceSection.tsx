@@ -5,6 +5,7 @@ import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
 import geLogo from "@/assets/logos/ge.jfif";
 import mahindraLogo from "@/assets/logos/mahindra.jfif";
+import mahajanLogo from "@/assets/logos/mahajan.jfif";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +57,7 @@ const experiences = [
     company: "Mahajan & Aibara",
     period: "2004 – 2006",
     description: "Management consulting across India, Singapore, Malaysia. BPR for Pfizer and Tata Teleservices, Performance Improvement for Raymond.",
-    logo: null,
+    logo: mahajanLogo,
   },
   {
     title: "Analyst – E-Business",
