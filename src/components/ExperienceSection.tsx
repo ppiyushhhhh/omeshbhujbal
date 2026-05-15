@@ -114,20 +114,16 @@ const ExperienceSection = () => {
                   key={i}
                   className="exp-item group py-6 border-b border-border last:border-0 flex gap-4 sm:gap-5"
                 >
-                  <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center">
-                    {exp.logo ? (
+                  {exp.logo && (
+                    <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center">
                       <img
                         src={exp.logo}
                         alt={`${exp.company} logo`}
                         className="w-full h-full object-contain"
                         loading="lazy"
                       />
-                    ) : (
-                      <span className="font-serif text-sm text-muted-foreground">
-                        {getInitials(exp.company)}
-                      </span>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
