@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
 import geLogo from "@/assets/logos/ge.jfif";
