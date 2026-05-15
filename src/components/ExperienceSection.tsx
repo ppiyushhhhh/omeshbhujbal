@@ -188,34 +188,7 @@ const ExperienceSection = () => {
           <div className="md:col-span-8 exp-list">
             <div className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm px-6 sm:px-8 shadow-sm">
               {experiences.map((exp, i) => (
-                <div
-                  key={i}
-                  className="exp-item group py-6 border-b border-border last:border-0 flex gap-4 sm:gap-5"
-                >
-                  {exp.logo && (
-                    <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center">
-                      <img
-                        src={exp.logo}
-                        alt={`${exp.company} logo`}
-                        className="w-full h-full object-contain"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
-                      <h3 className="font-serif text-lg md:text-xl text-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">
-                        {exp.title}
-                      </h3>
-                      <span className="text-xs text-muted-foreground font-sans tracking-wider shrink-0">
-                        {exp.period}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium text-foreground/60 mb-2">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{exp.description}</p>
-                  </div>
-                </div>
+                <ExperienceRow key={i} exp={exp} isLast={i === experiences.length - 1} />
               ))}
             </div>
           </div>
