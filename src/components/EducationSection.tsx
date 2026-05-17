@@ -27,10 +27,18 @@ const EducationSection = () => {
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".edu-item", {
-        opacity: 0, y: 20, duration: 0.6, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: ".edu-list", start: "top 85%" },
-      });
+      gsap.fromTo(
+        ".edu-item",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".edu-list", start: "top 90%", once: true },
+        }
+      );
     }, sectionRef);
     return () => ctx.revert();
   }, []);
