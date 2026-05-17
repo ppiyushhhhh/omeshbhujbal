@@ -31,7 +31,6 @@ const companies: Company[] = [
   {
     company: "Nexus Select Trust",
     period: "2023 – 2026",
-    badge: "Current",
     logo: nexusLogo,
     accent: "bg-foreground",
     summary:
