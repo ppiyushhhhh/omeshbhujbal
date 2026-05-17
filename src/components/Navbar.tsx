@@ -15,22 +15,34 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-background/90 backdrop-blur-lg border-b border-border/50" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
+        scrolled
+          ? "bg-background/80 backdrop-blur-xl border-b border-border/60 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.15)]"
+          : "bg-transparent border-b border-transparent"
       }`}
     >
-      <div className="section-container flex items-center justify-between h-16 md:h-20">
-        <a href="#" className="font-serif text-xl text-foreground">
+      <div
+        className={`section-container flex items-center justify-between transition-all duration-500 ease-out ${
+          scrolled ? "h-14 md:h-16" : "h-16 md:h-20"
+        }`}
+      >
+        <a
+          href="#"
+          className={`font-serif text-foreground transition-all duration-500 ${
+            scrolled ? "text-lg" : "text-xl"
+          }`}
+        >
           Omesh Bhujbal
         </a>
 
@@ -39,7 +51,7 @@ const Navbar = () => {
             <a
               key={item.label}
               href={item.href}
-              className="text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors duration-300"
+              className="relative text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full"
             >
               {item.label}
             </a>
