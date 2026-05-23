@@ -31,19 +31,8 @@ const AboutSection = () => {
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
           {/* Left column */}
           <div className="md:col-span-4 about-reveal">
-            <div className="relative w-40 h-40 md:w-52 md:h-52 mb-8 group">
-              <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
-              <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
-                <img
-                  src={headshot}
-                  alt="Omesh Bhujbal"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-            </div>
             <div className="flex gap-10">
+
               {stats.map((s) => (
                 <div key={s.label}>
                   <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
