@@ -26,6 +26,25 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
+          {/* Stats below photo */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            className="md:col-span-5 flex justify-center md:justify-start gap-8 sm:gap-10 -mt-2"
+          >
+            {[
+              { value: "22+", label: "Years" },
+              { value: "400M+", label: "Users Impacted" },
+              { value: "Global", label: "Delivery" },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
+                <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
+              </div>
+            ))}
+
+
           {/* Text - right */}
           <div className="md:col-span-7 text-center md:text-left">
             <motion.p
