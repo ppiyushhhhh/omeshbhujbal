@@ -42,11 +42,11 @@ const AboutSection = () => {
                 Partnered with CXOs & business leaders to create technology roadmaps delivering innovative,
                 cost-effective, highly scalable solutions with tangible business value.
               </p>
-            </div>
           </div>
         </div>
       </div>
     </section>
+
   );
 };
 
