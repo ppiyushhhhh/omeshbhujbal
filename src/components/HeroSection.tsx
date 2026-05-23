@@ -1,9 +1,29 @@
 import { motion } from "framer-motion";
+import headshot from "@/assets/headshot.jpg";
 
 const HeroSection = () => {
   return (
     <section className="min-h-screen flex items-center justify-center relative">
       <div className="section-container text-center py-32">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+          className="flex justify-center mb-8"
+        >
+          <div className="relative w-32 h-32 md:w-40 md:h-40 group">
+            <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
+            <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
+            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
+              <img
+                src={headshot}
+                alt="Omesh Bhujbal"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+          </div>
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -12,6 +32,7 @@ const HeroSection = () => {
         >
           Chief Technology Officer
         </motion.p>
+
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
