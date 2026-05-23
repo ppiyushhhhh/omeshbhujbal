@@ -1,15 +1,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import headshot from "@/assets/headshot.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const stats = [
-  { value: "22+", label: "Years" },
-  { value: "400M+", label: "Users Impacted" },
-  { value: "Global", label: "Delivery" },
-];
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -28,23 +21,9 @@ const AboutSection = () => {
   return (
     <section id="about" ref={sectionRef} className="py-24 md:py-36">
       <div className="section-container">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
-          {/* Left column */}
-          <div className="md:col-span-4 about-reveal">
-            <div className="flex gap-10">
+        <div className="about-reveal max-w-4xl">
+          <p className="section-label">About</p>
 
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right column */}
-          <div className="md:col-span-8 about-reveal">
-            <p className="section-label">About</p>
             <h2 className="section-title mb-8">
               Driving digital transformation at enterprise scale
             </h2>
@@ -63,11 +42,11 @@ const AboutSection = () => {
                 Partnered with CXOs & business leaders to create technology roadmaps delivering innovative,
                 cost-effective, highly scalable solutions with tangible business value.
               </p>
-            </div>
           </div>
         </div>
       </div>
     </section>
+
   );
 };
 
