@@ -7,42 +7,45 @@ const HeroSection = () => {
       <div className="section-container py-32">
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
           {/* Photo - left */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-            className="md:col-span-5 flex justify-center md:justify-start"
-          >
-            <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 group">
-              <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
-              <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
-                <img
-                  src={headshot}
-                  alt="Omesh Bhujbal"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+            >
+              <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 group">
+                <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
+                <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
+                <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
+                  <img
+                    src={headshot}
+                    alt="Omesh Bhujbal"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Stats below photo */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.6 }}
-            className="md:col-span-5 flex justify-center md:justify-start gap-8 sm:gap-10 -mt-2"
-          >
-            {[
-              { value: "22+", label: "Years" },
-              { value: "400M+", label: "Users Impacted" },
-              { value: "Global", label: "Delivery" },
-            ].map((s) => (
-              <div key={s.label}>
-                <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
-                <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
-              </div>
-            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.6 }}
+              className="flex gap-8 sm:gap-10"
+            >
+              {[
+                { value: "22+", label: "Years" },
+                { value: "400M+", label: "Users Impacted" },
+                { value: "Global", label: "Delivery" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+
 
 
           {/* Text - right */}
