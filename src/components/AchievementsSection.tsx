@@ -28,7 +28,7 @@ const AchievementsSection = () => {
   }, []);
 
   return (
-    <section id="achievements" ref={sectionRef} className="py-24 md:py-36 bg-card">
+    <section id="achievements" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32 bg-card">
       <div className="section-container">
         <p className="section-label">Impact</p>
         <h2 className="section-title mb-14">Key achievements</h2>

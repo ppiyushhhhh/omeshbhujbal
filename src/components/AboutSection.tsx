@@ -19,7 +19,7 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-24 md:py-36">
+    <section id="about" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
       <div className="section-container">
         <div className="about-reveal max-w-4xl">
           <p className="section-label">About</p>

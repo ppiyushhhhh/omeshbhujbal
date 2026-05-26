@@ -19,7 +19,7 @@ const ConnectSection = () => {
   }, []);
 
   return (
-    <section id="connect" ref={sectionRef} className="py-24 md:py-36">
+    <section id="connect" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
       <div className="section-container">
         <div className="connect-reveal text-center max-w-2xl mx-auto">
           <p className="section-label">Connect</p>

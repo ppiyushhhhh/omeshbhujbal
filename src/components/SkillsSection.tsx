@@ -38,7 +38,7 @@ const SkillsSection = () => {
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-24 md:py-36">
+    <section id="skills" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
       <div className="section-container">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16">
           <div className="md:col-span-4">
