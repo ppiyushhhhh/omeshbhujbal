@@ -63,7 +63,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-foreground leading-[0.95] mb-8"
+              className="font-serif text-[2.75rem] sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[0.95] mb-8 break-words"
             >
               Omesh<br />Bhujbal
             </motion.h1>
