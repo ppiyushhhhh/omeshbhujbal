@@ -3,11 +3,11 @@ import headshot from "@/assets/headshot.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center relative">
-      <div className="section-container py-32">
-        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="section-container py-24 sm:py-28 md:py-32">
+        <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
-          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8">
+          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8 w-full">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -30,7 +30,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex gap-8 sm:gap-10"
+              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start"
             >
               {[
                 { value: "22+", label: "Years" },
@@ -63,7 +63,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal text-foreground leading-[0.95] mb-8"
+              className="font-serif text-[2.75rem] sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[0.95] mb-8 break-words"
             >
               Omesh<br />Bhujbal
             </motion.h1>

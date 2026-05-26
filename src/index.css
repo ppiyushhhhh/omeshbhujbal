@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&display=swap');
 
 @layer base {
   :root {
@@ -55,7 +55,7 @@
 
 @layer components {
   .section-container {
-    @apply max-w-5xl mx-auto px-6 lg:px-8;
+    @apply max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 w-full;
   }
 
   .section-label {
@@ -63,7 +63,7 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-5xl font-normal text-foreground leading-tight;
+    @apply text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-normal text-foreground leading-tight;
   }
 
   .subtle-card {
