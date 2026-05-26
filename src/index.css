@@ -63,7 +63,7 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-5xl font-normal text-foreground leading-tight;
+    @apply text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-normal text-foreground leading-tight;
   }
 
   .subtle-card {
