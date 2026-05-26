@@ -3,9 +3,9 @@ import headshot from "@/assets/headshot.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center relative">
-      <div className="section-container py-32">
-        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="section-container py-24 sm:py-28 md:py-32">
+        <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
           <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8">
             <motion.div
