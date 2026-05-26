@@ -7,7 +7,18 @@ const HeroSection = () => {
       <div className="section-container py-24 sm:py-28 md:py-32">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
-          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8">
+          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8 w-full">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+              className="max-w-full"
+            ></motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+            >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
