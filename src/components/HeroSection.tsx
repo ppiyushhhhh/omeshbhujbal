@@ -30,7 +30,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex gap-8 sm:gap-10"
+              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start"
             >
               {[
                 { value: "22+", label: "Years" },
