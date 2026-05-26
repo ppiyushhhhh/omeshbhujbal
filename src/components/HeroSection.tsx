@@ -12,17 +12,6 @@ const HeroSection = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-              className="max-w-full"
-            ></motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-            >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
             >
               <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 group">
                 <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
