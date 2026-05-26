@@ -55,7 +55,7 @@
 
 @layer components {
   .section-container {
-    @apply max-w-5xl mx-auto px-6 lg:px-8;
+    @apply max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 w-full;
   }
 
   .section-label {
