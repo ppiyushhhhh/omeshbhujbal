@@ -7,20 +7,21 @@ const HeroSection = () => {
       <div className="section-container py-24 sm:py-28 md:py-32">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
-          <div className="md:col-span-5 flex flex-col items-center md:items-start gap-8 w-full">
+          <div className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+              className="transition-transform duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-0.5rem)]"
             >
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 group">
-                <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-700" />
+              <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80">
+                <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
                 <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
                 <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
                   <img
                     src={headshot}
                     alt="Omesh Bhujbal"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover/combo:scale-105"
                   />
                 </div>
               </div>
@@ -30,7 +31,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start"
+              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start transition-all duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-0.25rem)] group-hover/combo:drop-shadow-[0_10px_25px_hsl(var(--foreground)/0.18)]"
             >
               {[
                 { value: "22+", label: "Years" },
