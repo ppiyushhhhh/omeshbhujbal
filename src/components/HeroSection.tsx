@@ -93,6 +93,7 @@ const HeroSection = () => {
             </motion.div>
 
             <motion.div
+              ref={statsRef}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
@@ -103,7 +104,7 @@ const HeroSection = () => {
                 { value: "400M+", label: "Users Impacted" },
                 { value: "Global", label: "Delivery" },
               ].map((s) => (
-                <div key={s.label}>
+                <div key={s.label} data-stat>
                   <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
                   <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
                 </div>
