@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import headshot from "@/assets/headshot.jpg";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
   return (
