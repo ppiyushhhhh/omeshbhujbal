@@ -1,13 +1,78 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import headshot from "@/assets/headshot.jpg";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const HeroSection = () => {
+  const comboRef = useRef<HTMLDivElement>(null);
+  const photoGlowRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!comboRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: comboRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
+
+      if (photoGlowRef.current) {
+        tl.fromTo(
+          photoGlowRef.current,
+          { opacity: 0, filter: "blur(4px)", scale: 0.95 },
+          {
+            opacity: 1,
+            filter: "blur(28px)",
+            scale: 1.08,
+            duration: 1.2,
+            ease: "power2.out",
+          }
+        ).to(photoGlowRef.current, {
+          opacity: 0.8,
+          filter: "blur(12px)",
+          scale: 1,
+          duration: 1.1,
+          ease: "power2.inOut",
+        });
+      }
+
+      if (statsRef.current) {
+        const items = statsRef.current.querySelectorAll("[data-stat]");
+        tl.fromTo(
+          items,
+          { opacity: 0, y: 14, filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "drop-shadow(0 0 18px hsl(var(--foreground) / 0.35))",
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out",
+          },
+          "-=1.4"
+        ).to(items, {
+          filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))",
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+      }
+    }, comboRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="section-container py-24 sm:py-28 md:py-32">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
-          <div className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
+          <div ref={comboRef} className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -15,7 +80,7 @@ const HeroSection = () => {
               className="transition-transform duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-0.5rem)]"
             >
               <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80">
-                <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
+                <div ref={photoGlowRef} className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
                 <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
                 <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
                   <img
@@ -28,6 +93,7 @@ const HeroSection = () => {
             </motion.div>
 
             <motion.div
+              ref={statsRef}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
@@ -38,7 +104,7 @@ const HeroSection = () => {
                 { value: "400M+", label: "Users Impacted" },
                 { value: "Global", label: "Delivery" },
               ].map((s) => (
-                <div key={s.label}>
+                <div key={s.label} data-stat>
                   <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
                   <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
                 </div>
