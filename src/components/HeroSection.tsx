@@ -43,21 +43,21 @@ const HeroSection = () => {
       }
 
       if (statsRef.current) {
-        const items = statsRef.current.querySelectorAll("[data-stat]");
+        const items = statsRef.current.querySelectorAll<HTMLElement>("[data-stat]");
         tl.fromTo(
           items,
-          { opacity: 0, y: 14, filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))" },
+          { opacity: 0, y: 14, filter: "drop-shadow(0 0 0 rgba(0,0,0,0))" },
           {
             opacity: 1,
             y: 0,
-            filter: "drop-shadow(0 0 18px hsl(var(--foreground) / 0.35))",
+            filter: "drop-shadow(0 0 18px rgba(255,255,255,0.35))",
             duration: 0.7,
             stagger: 0.12,
             ease: "power2.out",
           },
           "-=1.4"
         ).to(items, {
-          filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))",
+          filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
           duration: 1.2,
           ease: "power2.inOut",
         });
