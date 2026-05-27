@@ -7,12 +7,72 @@ import headshot from "@/assets/headshot.jpg";
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
+  const comboRef = useRef<HTMLDivElement>(null);
+  const photoGlowRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!comboRef.current) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: comboRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
+
+      if (photoGlowRef.current) {
+        tl.fromTo(
+          photoGlowRef.current,
+          { opacity: 0, filter: "blur(4px)", scale: 0.95 },
+          {
+            opacity: 1,
+            filter: "blur(28px)",
+            scale: 1.08,
+            duration: 1.2,
+            ease: "power2.out",
+          }
+        ).to(photoGlowRef.current, {
+          opacity: 0.8,
+          filter: "blur(12px)",
+          scale: 1,
+          duration: 1.1,
+          ease: "power2.inOut",
+        });
+      }
+
+      if (statsRef.current) {
+        const items = statsRef.current.querySelectorAll("[data-stat]");
+        tl.fromTo(
+          items,
+          { opacity: 0, y: 14, filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "drop-shadow(0 0 18px hsl(var(--foreground) / 0.35))",
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out",
+          },
+          "-=1.4"
+        ).to(items, {
+          filter: "drop-shadow(0 0 0 hsl(var(--foreground) / 0))",
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+      }
+    }, comboRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="section-container py-24 sm:py-28 md:py-32">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
           {/* Photo - left */}
-          <div className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
+          <div ref={comboRef} className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
