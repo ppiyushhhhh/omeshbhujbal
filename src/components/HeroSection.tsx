@@ -31,21 +31,18 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="relative rounded-2xl p-[1px] bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-90 transition-all duration-700 ease-out will-change-transform group-hover/combo:opacity-100 group-hover/combo:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-0.25rem)] group-hover/combo:shadow-[0_20px_50px_-15px_hsl(var(--foreground)/0.25)]"
+              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start transition-all duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-0.25rem)] group-hover/combo:drop-shadow-[0_10px_25px_hsl(var(--foreground)/0.18)]"
             >
-              <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-0 blur-xl transition-opacity duration-700 group-hover/combo:opacity-40" aria-hidden="true" />
-              <div className="relative flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start rounded-[15px] bg-background/40 backdrop-blur-xl px-5 sm:px-6 py-4 sm:py-5">
-                {[
-                  { value: "22+", label: "Years" },
-                  { value: "400M+", label: "Users Impacted" },
-                  { value: "Global", label: "Delivery" },
-                ].map((s) => (
-                  <div key={s.label}>
-                    <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
-                    <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
-                  </div>
-                ))}
-              </div>
+              {[
+                { value: "22+", label: "Years" },
+                { value: "400M+", label: "Users Impacted" },
+                { value: "Global", label: "Delivery" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
+                </div>
+              ))}
             </motion.div>
           </div>
 
