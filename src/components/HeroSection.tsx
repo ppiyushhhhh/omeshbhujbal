@@ -80,7 +80,7 @@ const HeroSection = () => {
               className="transition-transform duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-0.5rem)]"
             >
               <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80">
-                <div className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
+                <div ref={photoGlowRef} className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
                 <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
                 <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
                   <img
