@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import leelaLogo from "@/assets/logos/the-leela.jfif.asset.json";
 import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
 import geLogo from "@/assets/logos/ge.jfif";
@@ -28,6 +29,20 @@ type Company = {
 };
 
 const companies: Company[] = [
+  {
+    company: "The Leela Palaces, Hotels and Resorts",
+    period: "Mar 2026 – Present · 5 mos",
+    logo: leelaLogo.url,
+    accent: "bg-foreground",
+    roles: [
+      {
+        title: "Vice President – Digital & Information Technology",
+        period: "Mar 2026 – Present · Mumbai, Maharashtra, India · On-site",
+        description:
+          "Driving Digital Strategy and Artificial Intelligence (AI) initiatives across luxury hospitality operations.",
+      },
+    ],
+  },
   {
     company: "Nexus Select Trust",
     period: "2023 – 2026",
