@@ -86,6 +86,10 @@ const HeroSection = () => {
                   <img
                     src={headshot}
                     alt="Omesh Bhujbal"
+                    width={320}
+                    height={320}
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover/combo:scale-105"
                   />
                 </div>
