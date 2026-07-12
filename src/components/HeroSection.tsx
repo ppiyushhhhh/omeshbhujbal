@@ -86,6 +86,10 @@ const HeroSection = () => {
                   <img
                     src={headshot}
                     alt="Omesh Bhujbal"
+                    width={320}
+                    height={320}
+                    fetchPriority="high"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover/combo:scale-105"
                   />
                 </div>
@@ -132,7 +136,8 @@ const HeroSection = () => {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="font-serif text-[2.75rem] sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[0.95] mb-8 break-words"
             >
-              Omesh<br />Bhujbal
+              <span aria-hidden="true">Omesh<br />Bhujbal</span>
+              <span className="sr-only">Omesh Bhujbal — Chief Technology Officer & Digital Transformation Leader</span>
             </motion.h1>
 
             <motion.div
