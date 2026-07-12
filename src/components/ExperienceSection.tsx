@@ -30,6 +30,20 @@ type Company = {
 
 const companies: Company[] = [
   {
+    company: "The Leela Palaces, Hotels and Resorts",
+    period: "Mar 2026 – Present · 5 mos",
+    logo: leelaLogo.url,
+    accent: "bg-foreground",
+    roles: [
+      {
+        title: "Vice President – Digital & Information Technology",
+        period: "Mar 2026 – Present · Mumbai, Maharashtra, India · On-site",
+        description:
+          "Driving Digital Strategy and Artificial Intelligence (AI) initiatives across luxury hospitality operations.",
+      },
+    ],
+  },
+  {
     company: "Nexus Select Trust",
     period: "2023 – 2026",
     logo: nexusLogo,
