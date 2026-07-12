@@ -31,7 +31,7 @@ type Company = {
 const companies: Company[] = [
   {
     company: "The Leela Palaces, Hotels and Resorts",
-    period: "Mar 2026 – Present · 5 mos",
+    period: "Mar 2026 – Present",
     logo: leelaLogo.url,
     accent: "bg-foreground",
     roles: [
