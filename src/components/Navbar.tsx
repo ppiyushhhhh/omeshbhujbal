@@ -23,22 +23,42 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const sections = navItems
-      .map((i) => document.getElementById(i.id))
-      .filter((el): el is HTMLElement => !!el);
-    if (sections.length === 0) return;
+    const getSections = () =>
+      navItems
+        .map((i) => document.getElementById(i.id))
+        .filter((el): el is HTMLElement => !!el);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActiveId(visible[0].target.id);
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] }
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    const updateActive = () => {
+      const sections = getSections();
+      if (sections.length === 0) return;
+      const offset = 100; // header + a little breathing room
+      const scrollY = window.scrollY;
+
+      // If near bottom of page, activate last section
+      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 2) {
+        setActiveId(sections[sections.length - 1].id);
+        return;
+      }
+
+      let current = sections[0].id;
+      for (const sec of sections) {
+        const top = sec.getBoundingClientRect().top + scrollY;
+        if (top - offset <= scrollY) {
+          current = sec.id;
+        } else {
+          break;
+        }
+      }
+      setActiveId(current);
+    };
+
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      window.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
   }, []);
 
   const handleNavClick = (
