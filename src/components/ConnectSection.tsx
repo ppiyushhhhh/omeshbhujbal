@@ -43,7 +43,7 @@ const ConnectSection = () => {
       <div className="section-container mt-24 pt-8 border-t border-border">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground tracking-wider uppercase">
           <p>© {new Date().getFullYear()} Omesh Bhujbal</p>
-          <p>CTO · Mumbai, India</p>
+          <p>Mumbai, India</p>
         </div>
       </div>
     </section>
