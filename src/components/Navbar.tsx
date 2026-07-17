@@ -28,14 +28,20 @@ const Navbar = () => {
         .map((i) => document.getElementById(i.id))
         .filter((el): el is HTMLElement => !!el);
 
-    const updateActive = () => {
+    let ticking = false;
+    let rafId: number | null = null;
+
+    const computeActive = () => {
       const sections = getSections();
       if (sections.length === 0) return;
       const offset = 100; // header + a little breathing room
       const scrollY = window.scrollY;
 
       // If near bottom of page, activate last section
-      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 2) {
+      if (
+        window.innerHeight + scrollY >=
+        document.documentElement.scrollHeight - 2
+      ) {
         setActiveId(sections[sections.length - 1].id);
         return;
       }
@@ -52,12 +58,23 @@ const Navbar = () => {
       setActiveId(current);
     };
 
-    updateActive();
+    const updateActive = () => {
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(() => {
+        computeActive();
+        ticking = false;
+        rafId = null;
+      });
+    };
+
+    computeActive();
     window.addEventListener("scroll", updateActive, { passive: true });
     window.addEventListener("resize", updateActive);
     return () => {
       window.removeEventListener("scroll", updateActive);
       window.removeEventListener("resize", updateActive);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 
