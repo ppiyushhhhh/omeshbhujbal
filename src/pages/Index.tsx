@@ -13,15 +13,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
-      <HeroSection />
-      <Suspense fallback={null}>
-        <AboutSection />
-        <ExperienceSection />
-        <AchievementsSection />
-        <SkillsSection />
-        <EducationSection />
-        <ConnectSection />
-      </Suspense>
+      <main>
+        <HeroSection />
+        <Suspense fallback={null}>
+          <AboutSection />
+          <ExperienceSection />
+          <AchievementsSection />
+          <SkillsSection />
+          <EducationSection />
+          <ConnectSection />
+        </Suspense>
+      </main>
     </div>
   );
 };
