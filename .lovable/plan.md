@@ -1,25 +1,32 @@
-# Remove `.asset.json` dependency for Leela logo
+# Add Awards section
 
 ## Scope
-Only `src/assets/logos/the-leela.jfif.asset.json` is used via a `.asset.json` import in this project. All other logos (`nexus.jfif`, `vi.jfif`, `ge.jfif`, `mahindra.jfif`, `mahajan.jfif`) are already real image imports.
+New dedicated section between Achievements and Skills showcasing the CIO100 2024 Award, with the two uploaded event photos and the provided description.
 
 ## Steps
 
-1. Download the binary from the current CDN URL (`/__l5e/assets-v1/6325967b-8cac-48f0-bd21-643732de4010/the-leela.jfif` via the preview host) and save it to `src/assets/logos/the-leela.jfif` as a real file bundled by Vite.
+1. **Save uploaded photos** as real image imports (Vercel-safe, following the project's no-`.asset.json` rule):
+   - `src/assets/awards/cio100-2024-plaque.jpg` (photo receiving the plaque)
+   - `src/assets/awards/cio100-2024-stage.jpg` (photo of the stage with name on screen)
 
-2. Delete `src/assets/logos/the-leela.jfif.asset.json`.
+2. **Create `src/components/AwardsSection.tsx`**:
+   - `id="awards"` section, matching editorial style (`section-label`, `section-title`, spacing/padding consistent with other sections).
+   - Section label: "Recognition" / Title: "Awards & honors".
+   - One award card containing:
+     - Two-column layout on desktop (photo gallery left, text right); stacked on mobile.
+     - Photo side: primary image (plaque) with the stage image as a smaller offset/secondary tile — subtle rounded frame, border, soft shadow, hover lift.
+     - Text side: award name "CIO100 Award — 2024", subtitle "19th CIO100 Awards & Symposium · IDG / IDC", organization "Nexus Select Malls", year badge "2024", and the provided description paragraph (lightly edited for portfolio tone; content preserved).
+   - GSAP scroll-triggered fade/slide-up entrance consistent with other sections.
 
-3. Edit `src/components/ExperienceSection.tsx`:
-   - Change `import leelaLogo from "@/assets/logos/the-leela.jfif.asset.json";` to `import leelaLogo from "@/assets/logos/the-leela.jfif";`
-   - Change `logo: leelaLogo.url` to `logo: leelaLogo`.
+3. **Wire into `src/pages/Index.tsx`**: lazy-import `AwardsSection` and render it between `AchievementsSection` and `SkillsSection`.
 
-4. Repo-wide search for `.asset.json`, `/__l5e/`, and `assets-v1` to confirm no other references remain (grep first, remove any leftovers).
+4. **Add nav item** in `src/components/Navbar.tsx`: `{ label: "Awards", href: "#awards", id: "awards" }` inserted after Achievements. Active-section tracker already handles any id automatically.
 
-5. Verify `src/assets/logos/` contains only real image files.
+5. **Update `public/sitemap.xml`** anchor list only if it enumerates section anchors (verify first; skip if it just lists `/`).
 
-6. Run `bun run build` to confirm Vite bundles the new import and the production build succeeds.
-
-7. Report: files modified/created/deleted and grep confirmation of zero remaining `/__l5e/` references.
+6. Build to confirm the new imports resolve.
 
 ## Notes
-No UI or design changes. Behavior identical — same logo image, just bundled through Vite instead of served from Lovable's CDN, which makes it portable to Vercel.
+- No changes to existing sections' content.
+- No `.asset.json`; images are bundled by Vite.
+- Description text will be lightly polished to first-person portfolio voice but keeps all facts (CIO100 2024, 19th edition, IDG, IDC jury, Nexus Select Malls team, industry connection).
