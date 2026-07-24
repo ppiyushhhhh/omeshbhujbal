@@ -5,6 +5,7 @@ import HeroSection from "@/components/HeroSection";
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
 const AchievementsSection = lazy(() => import("@/components/AchievementsSection"));
+const AwardsSection = lazy(() => import("@/components/AwardsSection"));
 const SkillsSection = lazy(() => import("@/components/SkillsSection"));
 const EducationSection = lazy(() => import("@/components/EducationSection"));
 const ConnectSection = lazy(() => import("@/components/ConnectSection"));
