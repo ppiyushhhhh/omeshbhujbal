@@ -1,0 +1,83 @@
+name: Daily Website Health Report
+
+on:
+  schedule:
+    # 21:00 IST == 15:30 UTC
+    - cron: "30 15 * * *"
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: "Override the site URL to scan"
+        required: false
+        default: ""
+
+concurrency:
+  group: website-health-report
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  health-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository (full history for Git metrics)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install automation dependencies
+        working-directory: automation
+        run: npm install --no-audit --no-fund
+
+      - name: Restore previous report history
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: daily-health-report.yml
+          name: website-health-report-latest
+          path: automation/reports
+          if_no_artifact_found: warn
+
+      - name: Generate health report
+        working-directory: automation
+        env:
+          SITE_URL: ${{ github.event.inputs.site_url || vars.SITE_URL || 'https://omeshbhujbal.com' }}
+          SITE_NAME: ${{ vars.SITE_NAME || 'Omesh Bhujbal — Executive Portfolio' }}
+          REPO_ROOT: ${{ github.workspace }}
+          OUTPUT_DIR: automation/reports
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+        run: node src/index.js
+
+      - name: Upload dated report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-health-report-${{ github.run_number }}
+          path: automation/reports/*
+          retention-days: 90
+
+      - name: Upload rolling "latest" artifact (carries history forward)
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-health-report-latest
+          path: automation/reports/history.json
+          retention-days: 90
+          overwrite: true
