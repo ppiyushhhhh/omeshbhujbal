@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import nodemailer from "nodemailer";
-import { config, nowIST } from "../config.js";
+import { config, nowIST } from "./config.js";
 
 /** Send the report via SMTP with the PDF attached and the HTML inline. */
 export async function sendReport({ html, pdfPath, score, summary }) {
