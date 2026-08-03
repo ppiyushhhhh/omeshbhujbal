@@ -18,9 +18,6 @@ import { performanceCheck } from "./checks/performance.js";
 import { repositoryCheck } from "./checks/repository.js";
 import { deploymentCheck } from "./checks/deployment.js";
 import { renderHtml } from "./report/html.js";
-// pdf.js and mailer.js are imported lazily so a missing optional dependency
-// (or a headless-Chrome-less environment) degrades gracefully.
-
 async function run() {
   const state = {};
   const sections = [];
@@ -70,27 +67,19 @@ async function run() {
     JSON.stringify({ generatedAt: nowIST(), site: config.siteUrl, score, counts, sections, state: { ...state, home: undefined } }, null, 2)
   );
 
-  let pdfOk = true;
-  try {
-    const { renderPdf } = await import("./report/pdf.js");
-    await renderPdf(html, pdfPath);
-  } catch (e) {
-    pdfOk = false;
-    console.error("PDF generation failed:", e.message);
+  const { renderPdf } = await import("./report/pdf.js");
+  await renderPdf(html, pdfPath);
+  if (!fs.existsSync(pdfPath)) {
+    throw new Error(`PDF generation completed but file does not exist: ${pdfPath}`);
   }
 
-  let mail = { sent: false, reason: "not attempted" };
-  try {
-    const { sendReport } = await import("./mailer.js");
-    mail = await sendReport({ html, pdfPath: pdfOk ? pdfPath : "", score, summary });
-  } catch (e) {
-    mail = { sent: false, reason: e.message };
-  }
+  const { sendReport } = await import("./mailer.js");
+  const mail = await sendReport({ html, pdfPath, score, summary });
 
   console.log(`\nHealth score: ${score}/100`);
   console.log(`Pass ${counts.pass} · Warn ${counts.warn} · Fail ${counts.fail}`);
   console.log(`HTML: ${htmlPath}`);
-  console.log(`PDF:  ${pdfOk ? pdfPath : "not generated"}`);
+  console.log(`PDF:  ${pdfPath}`);
   console.log(`Email: ${mail.sent ? "sent" : `not sent (${mail.reason})`}`);
 
   if (process.env.GITHUB_STEP_SUMMARY) {
