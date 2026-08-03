@@ -1,6 +1,14 @@
 import { check, PASS, WARN, FAIL, INFO } from "../lib/status.js";
 
-const meta = (html, re) => (html.match(re) || [])[1]?.trim();
+const decode = (s = "") =>
+  s
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+
+const meta = (html, re) => decode(((html.match(re) || [])[1] || "").trim()) || undefined;
 
 /** Title, description, canonical, headings, image alts, Open Graph / Twitter. */
 export async function metadataCheck(state) {
