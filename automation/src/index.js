@@ -81,6 +81,7 @@ async function run() {
 
   let mail = { sent: false, reason: "not attempted" };
   try {
+    const { sendReport } = await import("./mailer.js");
     mail = await sendReport({ html, pdfPath: pdfOk ? pdfPath : "", score, summary });
   } catch (e) {
     mail = { sent: false, reason: e.message };
