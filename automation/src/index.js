@@ -18,8 +18,8 @@ import { performanceCheck } from "./checks/performance.js";
 import { repositoryCheck } from "./checks/repository.js";
 import { deploymentCheck } from "./checks/deployment.js";
 import { renderHtml } from "./report/html.js";
-import { renderPdf } from "./report/pdf.js";
-import { sendReport } from "./mailer.js";
+// pdf.js and mailer.js are imported lazily so a missing optional dependency
+// (or a headless-Chrome-less environment) degrades gracefully.
 
 async function run() {
   const state = {};
