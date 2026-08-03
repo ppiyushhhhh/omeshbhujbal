@@ -68,8 +68,19 @@ async function run() {
   );
 
   const { renderPdf } = await import("./report/pdf.js");
+  const githubActivity = {
+    repository: process.env.GITHUB_REPOSITORY || "—",
+    branch: state.repository?.commit?.branch || process.env.GITHUB_REF_NAME || "—",
+    commitSha: state.repository?.commit?.hash || "—",
+    commitMessage: state.repository?.commit?.subject || "—",
+    commitAuthor: state.repository?.commit?.author || "—",
+    commitDateTime: state.repository?.commit?.date || "—",
+    workflowName: process.env.GITHUB_WORKFLOW || "Daily Website Health Report",
+    workflowRunNumber: process.env.GITHUB_RUN_NUMBER ? `#${process.env.GITHUB_RUN_NUMBER}` : "—",
+    workflowStatus: process.env.WORKFLOW_STATUS || "Success",
+  };
   await renderPdf(
-    { sections, score, state, summary, siteUrl: config.siteUrl, generatedAt: nowIST() },
+    { sections, score, state, summary, siteUrl: config.siteUrl, generatedAt: nowIST(), githubActivity },
     pdfPath
   );
   if (!fs.existsSync(pdfPath)) {
@@ -77,7 +88,13 @@ async function run() {
   }
 
   const { sendReport } = await import("./mailer.js");
-  const mail = await sendReport({ html, pdfPath, score, summary });
+  const mail = await sendReport({
+    pdfPath,
+    score,
+    summary,
+    responseTimeMs: state.responseTimeMs,
+    sslDaysRemaining: state.sslDaysRemaining,
+  });
 
   console.log(`\nHealth score: ${score}/100`);
   console.log(`Pass ${counts.pass} · Warn ${counts.warn} · Fail ${counts.fail}`);
