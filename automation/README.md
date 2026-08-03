@@ -32,12 +32,11 @@ and can be triggered manually via *Actions → Daily Website Health Report → R
 
 | Secret | Required | Purpose |
 |---|---|---|
-| `SMTP_HOST` | yes | SMTP server, e.g. `smtp.gmail.com` |
-| `SMTP_PORT` | yes | `587` (STARTTLS) or `465` (SSL) |
-| `SMTP_SECURE` | no | `true` for port 465 |
+| `SMTP_HOST` | yes | Must be `smtp.gmail.com` |
+| `SMTP_PORT` | yes | Must be `587` |
 | `SMTP_USER` | yes | SMTP username |
 | `SMTP_PASS` | yes | SMTP password / app password |
-| `MAIL_FROM` | no | Defaults to `SMTP_USER` |
+| `MAIL_FROM` | yes | Sender header value (falls back to `SMTP_USER` if Gmail rejects sender identity) |
 | `MAIL_TO` | yes | Recipient(s), comma-separated |
 | `VERCEL_TOKEN` | no | Enables latest-deployment details |
 | `VERCEL_PROJECT_ID` | no | Scopes the Vercel lookup |

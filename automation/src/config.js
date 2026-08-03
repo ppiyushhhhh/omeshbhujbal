@@ -4,6 +4,7 @@
  */
 
 const env = process.env;
+const readEnv = (key) => env[key]?.trim();
 
 export const config = {
   siteUrl: (env.SITE_URL || "https://omeshbhujbal.com").replace(/\/$/, ""),
@@ -31,13 +32,12 @@ export const config = {
 
   email: {
     enabled: env.SKIP_EMAIL !== "true",
-    host: env.SMTP_HOST,
-    port: Number(env.SMTP_PORT || 587),
-    secure: String(env.SMTP_SECURE || "false") === "true",
-    user: env.SMTP_USER,
-    pass: env.SMTP_PASS,
-    from: env.MAIL_FROM || env.SMTP_USER,
-    to: env.MAIL_TO,
+    host: readEnv("SMTP_HOST"),
+    port: Number(readEnv("SMTP_PORT") || 587),
+    user: readEnv("SMTP_USER"),
+    pass: readEnv("SMTP_PASS"),
+    from: readEnv("MAIL_FROM"),
+    to: readEnv("MAIL_TO"),
   },
 
   vercel: {
