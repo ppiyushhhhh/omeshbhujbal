@@ -56,7 +56,7 @@ start of the next run so the trend chart keeps its history.
 ```bash
 cd automation
 npm install
-SITE_URL=https://omeshbhujbal.com REPO_ROOT=.. npm run report:no-email
+SITE_URL=https://omeshbhujbal.com REPO_ROOT=.. OUTPUT_DIR=automation/reports npm run report:no-email
 open reports/health-report-*.html
 ```
 
