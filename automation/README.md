@@ -21,7 +21,7 @@ dependencies, and is never part of the Vite build or the Vercel deployment.
 
 Output: a weighted **health score (0–100)**, an HTML report with SVG charts
 (donut score, per-section status bars, 14-run trend line, heaviest-assets bar chart),
-a print-quality **A4 PDF**, and a machine-readable JSON snapshot.
+a print-quality **A4 executive PDF** (ReportLab Platypus), and a machine-readable JSON snapshot.
 
 ## Schedule
 
@@ -55,6 +55,7 @@ start of the next run so the trend chart keeps its history.
 ```bash
 cd automation
 npm install
+python -m pip install reportlab
 SITE_URL=https://omeshbhujbal.com REPO_ROOT=.. OUTPUT_DIR=automation/reports npm run report:no-email
 open reports/health-report-*.html
 ```
