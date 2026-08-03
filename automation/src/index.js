@@ -72,6 +72,7 @@ async function run() {
 
   let pdfOk = true;
   try {
+    const { renderPdf } = await import("./report/pdf.js");
     await renderPdf(html, pdfPath);
   } catch (e) {
     pdfOk = false;
