@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-08-03",
+    "score": 92,
+    "counts": {
+      "pass": 36,
+      "warn": 5,
+      "fail": 1,
+      "info": 16
+    },
+    "responseTimeMs": 272
+  }
+]

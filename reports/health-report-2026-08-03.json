@@ -1,0 +1,526 @@
+{
+  "generatedAt": "Monday, 3 August 2026 at 1:54 pm",
+  "site": "https://omeshbhujbal.lovable.app",
+  "score": 92,
+  "counts": {
+    "pass": 36,
+    "warn": 5,
+    "fail": 1,
+    "info": 16
+  },
+  "sections": [
+    {
+      "id": "uptime",
+      "title": "Uptime & Response",
+      "checks": [
+        {
+          "name": "Uptime",
+          "status": "pass",
+          "value": "UP",
+          "detail": ""
+        },
+        {
+          "name": "HTTP status",
+          "status": "pass",
+          "value": "200",
+          "detail": ""
+        },
+        {
+          "name": "Response time",
+          "status": "pass",
+          "value": "272 ms",
+          "detail": "Threshold 1200 ms"
+        },
+        {
+          "name": "HTTPS",
+          "status": "pass",
+          "value": "Enforced",
+          "detail": ""
+        },
+        {
+          "name": "HTTP → HTTPS redirect",
+          "status": "pass",
+          "value": "OK",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "ssl",
+      "title": "SSL / TLS Certificate",
+      "checks": [
+        {
+          "name": "Chain trusted",
+          "status": "pass",
+          "value": "Valid",
+          "detail": ""
+        },
+        {
+          "name": "Days until expiry",
+          "status": "pass",
+          "value": "40 days",
+          "detail": "Expires Sat, 12 Sep 2026 20:53:58 GMT"
+        },
+        {
+          "name": "Issuer",
+          "status": "info",
+          "value": "Google Trust Services",
+          "detail": ""
+        },
+        {
+          "name": "Subject",
+          "status": "info",
+          "value": "lovable.app",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "meta",
+      "title": "SEO Metadata",
+      "checks": [
+        {
+          "name": "Title",
+          "status": "warn",
+          "value": "Omesh Bhujbal | Vice President – Digital &amp; Information Techn (64 chars)",
+          "detail": "Recommended under 60 characters"
+        },
+        {
+          "name": "Meta description",
+          "status": "pass",
+          "value": "142 chars",
+          "detail": "Executive portfolio of Omesh Bhujbal, CTO with 22+ years driving digital transformation, AI/ML innovation, and enterprise technology at scale."
+        },
+        {
+          "name": "Canonical",
+          "status": "pass",
+          "value": "https://omeshbhujbal.lovable.app/",
+          "detail": ""
+        },
+        {
+          "name": "Viewport",
+          "status": "pass",
+          "value": "Present",
+          "detail": ""
+        },
+        {
+          "name": "H1 count",
+          "status": "fail",
+          "value": "0",
+          "detail": ""
+        },
+        {
+          "name": "Images without alt",
+          "status": "pass",
+          "value": "0/0",
+          "detail": ""
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "status": "pass",
+          "value": "Present",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "og",
+      "title": "Open Graph & Social",
+      "checks": [
+        {
+          "name": "og:title",
+          "status": "pass",
+          "value": "Omesh Bhujbal | Vice President – Digital &amp; Information Techn",
+          "detail": ""
+        },
+        {
+          "name": "og:description",
+          "status": "pass",
+          "value": "Executive portfolio of Omesh Bhujbal, CTO with 22+ years driving digital transformation, AI/ML innovation, and enterprise technology at scale.",
+          "detail": ""
+        },
+        {
+          "name": "og:type",
+          "status": "pass",
+          "value": "website",
+          "detail": ""
+        },
+        {
+          "name": "og:image",
+          "status": "pass",
+          "value": "https://storage.googleapis.com/gpt-engineer-file-uploads/R0s0MI3OVnS7sweTXW1nxACOHnd2/social-images/social-1784919035608-902d1bb0-7d93-4bdd-b507-14765d7f458c.webp",
+          "detail": ""
+        },
+        {
+          "name": "og:url",
+          "status": "pass",
+          "value": "https://omeshbhujbal.lovable.app/",
+          "detail": ""
+        },
+        {
+          "name": "twitter:card",
+          "status": "pass",
+          "value": "summary_large_image",
+          "detail": ""
+        },
+        {
+          "name": "Document size",
+          "status": "info",
+          "value": "11 KB",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "crawl",
+      "title": "Sitemap & Robots",
+      "checks": [
+        {
+          "name": "robots.txt",
+          "status": "pass",
+          "value": "Present",
+          "detail": ""
+        },
+        {
+          "name": "Sitemap directive",
+          "status": "pass",
+          "value": "https://omeshbhujbal.lovable.app/sitemap.xml",
+          "detail": ""
+        },
+        {
+          "name": "sitemap.xml",
+          "status": "pass",
+          "value": "Present",
+          "detail": ""
+        },
+        {
+          "name": "Sitemap URLs",
+          "status": "pass",
+          "value": "1",
+          "detail": ""
+        },
+        {
+          "name": "Sitemap well-formed",
+          "status": "pass",
+          "value": "Yes",
+          "detail": ""
+        },
+        {
+          "name": "Checked at",
+          "status": "info",
+          "value": "2026-08-03T08:24:13.308Z",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "title": "Link Integrity",
+      "checks": [
+        {
+          "name": "Links scanned",
+          "status": "info",
+          "value": "6",
+          "detail": ""
+        },
+        {
+          "name": "Broken links",
+          "status": "pass",
+          "value": "0",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security Headers",
+      "checks": [
+        {
+          "name": "strict-transport-security",
+          "status": "pass",
+          "value": "max-age=31536000; includeSubDomains",
+          "detail": ""
+        },
+        {
+          "name": "content-security-policy",
+          "status": "warn",
+          "value": "Missing",
+          "detail": "No CSP"
+        },
+        {
+          "name": "x-content-type-options",
+          "status": "pass",
+          "value": "nosniff",
+          "detail": ""
+        },
+        {
+          "name": "x-frame-options",
+          "status": "warn",
+          "value": "Missing",
+          "detail": "Clickjacking protection missing"
+        },
+        {
+          "name": "referrer-policy",
+          "status": "pass",
+          "value": "strict-origin-when-cross-origin",
+          "detail": ""
+        },
+        {
+          "name": "permissions-policy",
+          "status": "warn",
+          "value": "Missing",
+          "detail": "Permissions policy missing"
+        },
+        {
+          "name": "Server",
+          "status": "info",
+          "value": "cloudflare",
+          "detail": ""
+        },
+        {
+          "name": "Cache-Control",
+          "status": "pass",
+          "value": "no-cache, must-revalidate, max-age=0",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "title": "Performance & Asset Sizes",
+      "checks": [
+        {
+          "name": "Assets discovered",
+          "status": "info",
+          "value": "3",
+          "detail": ""
+        },
+        {
+          "name": "Total page weight",
+          "status": "pass",
+          "value": "620 KB",
+          "detail": "Threshold 2500 KB"
+        },
+        {
+          "name": "HTML document",
+          "status": "pass",
+          "value": "12 KB",
+          "detail": ""
+        },
+        {
+          "name": "Failed asset requests",
+          "status": "pass",
+          "value": "0",
+          "detail": ""
+        },
+        {
+          "name": "Uncompressed large assets",
+          "status": "pass",
+          "value": "0",
+          "detail": ""
+        },
+        {
+          "name": "/assets/index-CxxkJ4Mx.js",
+          "status": "warn",
+          "value": "519 KB",
+          "detail": "gzip · 108 ms"
+        },
+        {
+          "name": "/assets/index-CWUGAnYA.css",
+          "status": "info",
+          "value": "68 KB",
+          "detail": "gzip · 51 ms"
+        },
+        {
+          "name": "/~flock.js",
+          "status": "info",
+          "value": "21 KB",
+          "detail": "gzip · 69 ms"
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "title": "Deployment",
+      "checks": [
+        {
+          "name": "Vercel API",
+          "status": "info",
+          "value": "Skipped",
+          "detail": "Set VERCEL_TOKEN to include deployment details"
+        },
+        {
+          "name": "Edge cache",
+          "status": "info",
+          "value": "—",
+          "detail": ""
+        },
+        {
+          "name": "Served by",
+          "status": "info",
+          "value": "cloudflare",
+          "detail": ""
+        },
+        {
+          "name": "Last-Modified / Age",
+          "status": "info",
+          "value": "—",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "id": "repository",
+      "title": "Repository & Storage",
+      "checks": [
+        {
+          "name": "Source size (excl. node_modules)",
+          "status": "pass",
+          "value": "2.17 MB",
+          "detail": ""
+        },
+        {
+          "name": "Git history size",
+          "status": "pass",
+          "value": "0.00 MB",
+          "detail": ""
+        },
+        {
+          "name": "Build output (dist/)",
+          "status": "info",
+          "value": "Not built in this run",
+          "detail": ""
+        },
+        {
+          "name": "Total repo footprint",
+          "status": "pass",
+          "value": "2.17 MB",
+          "detail": ""
+        },
+        {
+          "name": "Tracked files",
+          "status": "info",
+          "value": "131",
+          "detail": ""
+        },
+        {
+          "name": "Commits (last 30 days)",
+          "status": "pass",
+          "value": "59",
+          "detail": ""
+        },
+        {
+          "name": "Latest commit",
+          "status": "info",
+          "value": "6fe80c3 — Changes",
+          "detail": "gpt-engineer-app[bot] · 2026-08-03 08:24:08 +0000 · edit/edt-fe60024a-bcc9-459e-aeb3-8e1fdd106365"
+        }
+      ]
+    }
+  ],
+  "state": {
+    "responseTimeMs": 272,
+    "sslDaysRemaining": 40,
+    "links": {
+      "total": 6,
+      "broken": 0,
+      "results": [
+        {
+          "url": "https://omeshbhujbal.lovable.app/",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/sitemap.xml",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/robots.txt",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/favicon.ico",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/assets/index-CWUGAnYA.css",
+          "status": 200,
+          "ok": true
+        },
+        {
+          "url": "https://lovable.dev/projects/lovp_76c9txve5c94jbz69xqtej7bvr?utm_source=lovable-badge",
+          "status": 200,
+          "ok": true
+        }
+      ]
+    },
+    "sitemapUrls": 1,
+    "performance": {
+      "totalKb": 620,
+      "htmlKb": 12,
+      "assetCount": 3,
+      "heaviest": [
+        {
+          "url": "https://omeshbhujbal.lovable.app/assets/index-CxxkJ4Mx.js",
+          "bytes": 531347,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 108
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/assets/index-CWUGAnYA.css",
+          "bytes": 69983,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 51
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/~flock.js",
+          "bytes": 21296,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 69
+        }
+      ],
+      "slowest": [
+        {
+          "url": "https://omeshbhujbal.lovable.app/assets/index-CxxkJ4Mx.js",
+          "bytes": 531347,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 108
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/~flock.js",
+          "bytes": 21296,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 69
+        },
+        {
+          "url": "https://omeshbhujbal.lovable.app/assets/index-CWUGAnYA.css",
+          "bytes": 69983,
+          "encoding": "gzip",
+          "ok": true,
+          "durationMs": 51
+        }
+      ]
+    },
+    "repository": {
+      "sourceBytes": 2277130,
+      "gitBytes": 0,
+      "buildBytes": 0,
+      "commit": {
+        "hash": "6fe80c3",
+        "subject": "Changes",
+        "author": "gpt-engineer-app[bot]",
+        "date": "2026-08-03 08:24:08 +0000",
+        "branch": "edit/edt-fe60024a-bcc9-459e-aeb3-8e1fdd106365"
+      },
+      "commits30d": "59"
+    }
+  }
+}
