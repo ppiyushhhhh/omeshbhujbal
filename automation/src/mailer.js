@@ -7,7 +7,6 @@ const REQUIRED_EMAIL_ENV = [
   "SMTP_PORT",
   "SMTP_USER",
   "SMTP_PASS",
-  "MAIL_FROM",
   "MAIL_TO",
 ];
 
@@ -78,7 +77,7 @@ export async function sendReport({ html, pdfPath, score, summary }) {
   });
 
   const recipients = email.to.split(",").map((s) => s.trim()).filter(Boolean);
-  let fromAddress = email.from;
+  let fromAddress = email.from || process.env.SMTP_USER;
 
   console.log("[mailer] SMTP host:", process.env.SMTP_HOST);
   console.log("[mailer] SMTP port:", Number(process.env.SMTP_PORT));
