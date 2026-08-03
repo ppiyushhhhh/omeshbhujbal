@@ -1,0 +1,15 @@
+{
+  "name": "website-health-automation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily website health report generator (HTML + PDF + email). Isolated from the portfolio app.",
+  "scripts": {
+    "report": "node src/index.js",
+    "report:no-email": "SKIP_EMAIL=true node src/index.js"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.14",
+    "puppeteer": "^22.15.0"
+  }
+}
