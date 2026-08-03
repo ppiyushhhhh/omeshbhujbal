@@ -38,6 +38,7 @@ export const config = {
     pass: readEnv("SMTP_PASS"),
     from: readEnv("MAIL_FROM"),
     to: readEnv("MAIL_TO"),
+    cc: readEnv("MAIL_CC"),
   },
 
   vercel: {
