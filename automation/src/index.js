@@ -68,7 +68,10 @@ async function run() {
   );
 
   const { renderPdf } = await import("./report/pdf.js");
-  await renderPdf(html, pdfPath);
+  await renderPdf(
+    { sections, score, state, summary, siteUrl: config.siteUrl, generatedAt: nowIST() },
+    pdfPath
+  );
   if (!fs.existsSync(pdfPath)) {
     throw new Error(`PDF generation completed but file does not exist: ${pdfPath}`);
   }
