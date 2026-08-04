@@ -30,8 +30,8 @@ STATUS_MAP = {
 }
 
 PAGE_W = 190 * mm          # A4 width minus 10mm margins each side
-COL_L = 93 * mm
-COL_R = 93 * mm
+COL_L = 91 * mm
+COL_R = 91 * mm
 COL_GAP = 4 * mm
 
 styles = getSampleStyleSheet()
@@ -375,7 +375,7 @@ def build(payload, out_path):
     right.append(Spacer(1, 3 * mm))
     right += block("Git & Deployment Summary", data_table(git_rows, COL_R))
 
-    body = Table([[left, right]], colWidths=[COL_L, COL_R], hAlign="LEFT")
+    body = Table([[left, right]], colWidths=[COL_L + COL_GAP / 2, COL_R + COL_GAP / 2], hAlign="LEFT")
     body.setStyle(TableStyle([
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("LEFTPADDING", (0, 0), (0, 0), 0), ("RIGHTPADDING", (0, 0), (0, 0), COL_GAP / 2),
