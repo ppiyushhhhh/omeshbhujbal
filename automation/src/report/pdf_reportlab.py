@@ -30,9 +30,8 @@ STATUS_MAP = {
 }
 
 PAGE_W = 190 * mm          # A4 width minus 10mm margins each side
-COL_L = 91 * mm
-COL_R = 91 * mm
 COL_GAP = 4 * mm
+COL3 = (PAGE_W - 2 * COL_GAP) / 3
 
 styles = getSampleStyleSheet()
 
@@ -63,20 +62,11 @@ def norm(v):
 
 
 def wrap(text, limit=46):
-    """Insert soft break opportunities so long URLs wrap inside a cell."""
-    t = norm(text)
-    out = []
-    run = 0
-    for ch in t:
-        out.append(ch)
-        run = 0 if ch in " /-_.,:?&=" else run + 1
-        if ch in "/-_.?&=":
-            out.append("\u200b")
-            run = 0
-        elif run >= limit:
-            out.append("\u200b")
-            run = 0
-    return "".join(out)
+    """Escape and hard-truncate overly long values so nothing overflows."""
+    t = norm(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    if len(t) > limit * 3:
+        t = t[: limit * 3 - 1] + "\u2026"
+    return t
 
 
 def badge(status, width=14 * mm):
@@ -205,6 +195,43 @@ def data_table(rows, width, with_status=True, headers=("Metric", "Value", "Statu
     ]
     for i in range(2, len(data), 2):
         style.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FCFDFE")))
+    t.setStyle(TableStyle(style))
+    return t
+
+
+def pair_grid(rows, columns=3):
+    """Label/value pairs laid out in an aligned multi-column grid."""
+    per = -(-len(rows) // columns)
+    cols = [rows[i * per:(i + 1) * per] for i in range(columns)]
+    cols = [c + [("", "—", "info")] * (per - len(c)) for c in cols]
+
+    data = []
+    for r in range(per):
+        row = []
+        for c in cols:
+            name, value, status = c[r]
+            row.append(Paragraph(wrap(name, 26), BODY_B) if name else Paragraph("", BODY))
+            row.append(Paragraph(wrap(value, 34), BODY) if name else Paragraph("", BODY))
+        data.append(row)
+
+    unit = PAGE_W / columns
+    widths = []
+    for _ in range(columns):
+        widths += [unit * 0.42, unit * 0.58]
+    t = Table(data, colWidths=widths, rowHeights=[5.0 * mm] * per)
+    style = [
+        ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
+        ("INNERGRID", (0, 0), (-1, -1), 0.35, BORDER),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 3.5), ("RIGHTPADDING", (0, 0), (-1, -1), 3.5),
+        ("TOPPADDING", (0, 0), (-1, -1), 1.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5),
+    ]
+    for i in range(0, per, 2):
+        style.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FCFDFE")))
+    for c in range(columns):
+        style.append(("BACKGROUND", (c * 2, 0), (c * 2, -1), SOFT))
+        if c:
+            style.append(("LINEBEFORE", (c * 2, 0), (c * 2, -1), 0.7, BORDER))
     t.setStyle(TableStyle(style))
     return t
 
@@ -365,25 +392,26 @@ def build(payload, out_path):
     ]
     git_rows = [(n, norm(v), s) for n, v, s in git_rows]
 
-    left = []
-    left += block("Website Health Summary", data_table(health_rows, COL_L))
-    left.append(Spacer(1, 3 * mm))
-    left += block("Performance Summary", data_table(perf_rows, COL_L))
+    def col(title, rows):
+        return [Paragraph(title, SECTION_STYLE), Spacer(1, 1.4 * mm), data_table(rows, COL3)]
 
-    right = []
-    right += block("SEO Summary", data_table(seo_rows, COL_R))
-    right.append(Spacer(1, 3 * mm))
-    right += block("Git & Deployment Summary", data_table(git_rows, COL_R))
-
-    body = Table([[left, right]], colWidths=[COL_L + COL_GAP / 2, COL_R + COL_GAP / 2], hAlign="LEFT")
-    body.setStyle(TableStyle([
+    top = Table([[col("Website Health Summary", health_rows),
+                  col("Performance Summary", perf_rows),
+                  col("SEO Summary", seo_rows)]],
+                colWidths=[COL3 + COL_GAP, COL3 + COL_GAP, COL3], hAlign="LEFT")
+    top.setStyle(TableStyle([
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
-        ("LEFTPADDING", (0, 0), (0, 0), 0), ("RIGHTPADDING", (0, 0), (0, 0), COL_GAP / 2),
-        ("LEFTPADDING", (1, 0), (1, 0), COL_GAP / 2), ("RIGHTPADDING", (1, 0), (1, 0), 0),
+        ("LEFTPADDING", (0, 0), (-1, -1), 0),
+        ("RIGHTPADDING", (0, 0), (1, 0), COL_GAP), ("RIGHTPADDING", (2, 0), (2, 0), 0),
         ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
     ]))
-    flow.append(body)
-    flow.append(Spacer(1, 3 * mm))
+    flow.append(top)
+    flow.append(Spacer(1, 3.4 * mm))
+
+    flow.append(Paragraph("Git &amp; Deployment Summary", SECTION_STYLE))
+    flow.append(Spacer(1, 1.4 * mm))
+    flow.append(pair_grid(git_rows))
+    flow.append(Spacer(1, 3.4 * mm))
     flow.append(footer_block())
 
     doc.build(flow)

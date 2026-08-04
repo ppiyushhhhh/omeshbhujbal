@@ -58,10 +58,10 @@ export async function repositoryCheck(state) {
   };
   const commits30d = sh('git rev-list --count --since="30 days ago" HEAD') || "0";
   const commitsToday = sh('git rev-list --count --since="midnight" HEAD') || "0";
-  const remoteUrl = sh("git config --get remote.origin.url");
+  const remoteUrl = sh("git config --get remote.origin.url").replace(/\/\/[^@/]*@/, "//");
   const repoName =
     process.env.GITHUB_REPOSITORY ||
-    (remoteUrl.match(/[:/]([^/:]+\/[^/]+?)(?:\.git)?$/) || [])[1] ||
+    ((remoteUrl.replace(/\.git$/, "").split("/").filter(Boolean).slice(-2).join("/")) || "").slice(0, 60) ||
     "—";
   const trackedFiles = (sh("git ls-files").match(/\n/g) || []).length + 1;
 
