@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""One-page A4 executive dashboard for the Daily Website Health Report."""
 import json
 import sys
 from datetime import datetime
+
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import A4
@@ -10,14 +12,15 @@ from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 NAVY = colors.HexColor("#0F172A")
+SLATE = colors.HexColor("#334155")
 TEXT = colors.HexColor("#475569")
 MUTED = colors.HexColor("#64748B")
 BORDER = colors.HexColor("#E2E8F0")
+SOFT = colors.HexColor("#F8FAFC")
 WHITE = colors.white
 GREEN = colors.HexColor("#16A34A")
 AMBER = colors.HexColor("#D97706")
 RED = colors.HexColor("#DC2626")
-
 
 STATUS_MAP = {
     "pass": ("PASS", GREEN),
@@ -26,59 +29,74 @@ STATUS_MAP = {
     "info": ("INFO", MUTED),
 }
 
+PAGE_W = 190 * mm          # A4 width minus 10mm margins each side
+COL_L = 93 * mm
+COL_R = 93 * mm
+COL_GAP = 4 * mm
 
 styles = getSampleStyleSheet()
-TITLE_STYLE = ParagraphStyle(
-    "title", parent=styles["Heading1"], fontName="Helvetica-Bold", fontSize=16, leading=18, textColor=NAVY, spaceAfter=2
-)
-SUB_STYLE = ParagraphStyle(
-    "sub", parent=styles["Normal"], fontName="Helvetica", fontSize=8, leading=10, textColor=MUTED
-)
-SECTION_STYLE = ParagraphStyle(
-    "section", parent=styles["Heading2"], fontName="Helvetica-Bold", fontSize=9.5, leading=11, textColor=NAVY, spaceAfter=3
-)
-BODY_STYLE = ParagraphStyle(
-    "body", parent=styles["Normal"], fontName="Helvetica", fontSize=7.6, leading=9.2, textColor=TEXT
-)
-VALUE_STYLE = ParagraphStyle(
-    "value", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=12, leading=13, textColor=NAVY, alignment=TA_LEFT
-)
-LABEL_STYLE = ParagraphStyle(
-    "label", parent=styles["Normal"], fontName="Helvetica", fontSize=7, leading=8.5, textColor=MUTED
-)
 
 
-def normalize(v):
-    return str(v or "—")
+def S(name, **kw):
+    base = kw.pop("parent", styles["Normal"])
+    return ParagraphStyle(name, parent=base, **kw)
 
 
-def badge(status):
+TITLE_STYLE = S("title", fontName="Helvetica-Bold", fontSize=15, leading=17, textColor=WHITE)
+HEADER_SUB = S("hsub", fontName="Helvetica", fontSize=7.6, leading=9.6, textColor=colors.HexColor("#CBD5E1"))
+HEADER_SUB_R = S("hsubr", parent=HEADER_SUB, alignment=TA_RIGHT)
+META_LABEL = S("mlabel", fontName="Helvetica", fontSize=6, leading=7.4, textColor=MUTED)
+META_VALUE = S("mvalue", fontName="Helvetica-Bold", fontSize=7.6, leading=9, textColor=NAVY)
+SECTION_STYLE = S("section", fontName="Helvetica-Bold", fontSize=8.8, leading=10.5, textColor=NAVY)
+BODY = S("body", fontName="Helvetica", fontSize=7, leading=8.6, textColor=TEXT)
+BODY_B = S("bodyb", parent=BODY, fontName="Helvetica-Bold", textColor=SLATE)
+TH = S("th", fontName="Helvetica-Bold", fontSize=6.2, leading=7.6, textColor=MUTED)
+KPI_LABEL = S("kpilabel", fontName="Helvetica", fontSize=5.7, leading=7, textColor=MUTED, alignment=TA_CENTER)
+KPI_VALUE = S("kpivalue", fontName="Helvetica-Bold", fontSize=12.5, leading=14, textColor=NAVY, alignment=TA_CENTER)
+FOOTER = S("footer", fontName="Helvetica", fontSize=6.4, leading=8, textColor=MUTED, alignment=TA_CENTER)
+
+
+def norm(v):
+    if v is None or v == "":
+        return "—"
+    return str(v)
+
+
+def wrap(text, limit=46):
+    """Insert soft break opportunities so long URLs wrap inside a cell."""
+    t = norm(text)
+    out = []
+    run = 0
+    for ch in t:
+        out.append(ch)
+        run = 0 if ch in " /-_.,:?&=" else run + 1
+        if ch in "/-_.?&=":
+            out.append("\u200b")
+            run = 0
+        elif run >= limit:
+            out.append("\u200b")
+            run = 0
+    return "".join(out)
+
+
+def badge(status, width=14 * mm):
     label, color = STATUS_MAP.get(status, ("INFO", MUTED))
-    bstyle = ParagraphStyle(
-        "badge", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=6.7, leading=8, alignment=TA_CENTER, textColor=color
-    )
-    t = Table([[Paragraph(label, bstyle)]], colWidths=[16 * mm], rowHeights=[4.5 * mm])
-    t.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, -1), colors.Color(color.red, color.green, color.blue, alpha=0.12)),
-                ("TEXTCOLOR", (0, 0), (-1, -1), color),
-                ("BOX", (0, 0), (-1, -1), 0.4, color),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ]
-        )
-    )
+    bstyle = S("badge", fontName="Helvetica-Bold", fontSize=5.9, leading=7,
+               alignment=TA_CENTER, textColor=color)
+    t = Table([[Paragraph(label, bstyle)]], colWidths=[width], rowHeights=[3.8 * mm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, -1), colors.Color(color.red, color.green, color.blue, alpha=0.10)),
+        ("BOX", (0, 0), (-1, -1), 0.4, colors.Color(color.red, color.green, color.blue, alpha=0.55)),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+    ]))
     return t
 
 
-def section_by_id(sections, section_id):
+def section_by_id(sections, sid):
     for s in sections:
-        if s.get("id") == section_id:
+        if s.get("id") == sid:
             return s
     return {"checks": []}
 
@@ -87,307 +105,295 @@ def check_by_name(section, name):
     for c in section.get("checks", []):
         if c.get("name", "").lower() == name.lower():
             return c
-    return None
+    return {}
 
 
-def metric_card(title, value, status=None):
-    body = [Paragraph(title.upper(), LABEL_STYLE), Paragraph(normalize(value), VALUE_STYLE)]
-    if status:
-        body.append(badge(status))
-    card = Table([[body]], colWidths=[43 * mm], rowHeights=[17 * mm])
-    card.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, -1), WHITE),
-                ("BOX", (0, 0), (-1, -1), 0.8, BORDER),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 4),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 4),
-                ("TOPPADDING", (0, 0), (-1, -1), 3),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-            ]
-        )
-    )
-    return card
+def cv(section, name, default="—"):
+    c = check_by_name(section, name)
+    return (norm(c.get("value")) if c.get("value") not in (None, "") else default, c.get("status", "info"))
 
 
-def summary_table(rows):
-    data = [[Paragraph("Metric", LABEL_STYLE), Paragraph("Value", LABEL_STYLE), Paragraph("Status", LABEL_STYLE)]]
-    for name, value, status in rows:
-        data.append([Paragraph(name, BODY_STYLE), Paragraph(normalize(value), BODY_STYLE), badge(status)])
+# ---------------------------------------------------------------- components
 
-    t = Table(data, colWidths=[47 * mm, 38 * mm, 22 * mm], rowHeights=[5.4 * mm] + [4.8 * mm] * (len(data) - 1))
-    t.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F8FAFC")),
-                ("BOX", (0, 0), (-1, -1), 0.7, BORDER),
-                ("LINEBELOW", (0, 0), (-1, -1), 0.4, BORDER),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 4),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 4),
-                ("TOPPADDING", (0, 0), (-1, -1), 1.5),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5),
-            ]
-        )
-    )
+def header_block(site_url, generated_at, meta):
+    left = [Paragraph("Daily Website Health Report", TITLE_STYLE),
+            Paragraph(wrap(site_url, 60), HEADER_SUB)]
+    right = [Paragraph(f"Generated {norm(generated_at)}", HEADER_SUB_R),
+             Paragraph("Automated monitoring · executive summary", HEADER_SUB_R)]
+    t = Table([[left, right]], colWidths=[118 * mm, 72 * mm], rowHeights=[16 * mm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, -1), NAVY),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (0, 0), 6), ("RIGHTPADDING", (-1, 0), (-1, 0), 6),
+        ("TOPPADDING", (0, 0), (-1, -1), 2), ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+    ]))
     return t
 
 
-def priority_badge(priority):
-    color = RED if priority == "High" else AMBER if priority == "Medium" else GREEN
-    bstyle = ParagraphStyle(
-        "priority-badge", parent=styles["Normal"], fontName="Helvetica-Bold", fontSize=6.7, leading=8, alignment=TA_CENTER, textColor=color
-    )
-    t = Table([[Paragraph(priority.upper(), bstyle)]], colWidths=[16 * mm], rowHeights=[4.5 * mm])
-    t.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, -1), colors.Color(color.red, color.green, color.blue, alpha=0.12)),
-                ("TEXTCOLOR", (0, 0), (-1, -1), color),
-                ("BOX", (0, 0), (-1, -1), 0.4, color),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ]
-        )
-    )
+def meta_strip(items):
+    cells = []
+    for label, value in items:
+        cells.append([Paragraph(label.upper(), META_LABEL), Paragraph(wrap(value, 28), META_VALUE)])
+    w = PAGE_W / len(items)
+    t = Table([cells], colWidths=[w] * len(items), rowHeights=[9.5 * mm])
+    style = [
+        ("BACKGROUND", (0, 0), (-1, -1), SOFT),
+        ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4), ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 1), ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+    ]
+    for i in range(1, len(items)):
+        style.append(("LINEBEFORE", (i, 0), (i, 0), 0.5, BORDER))
+    t.setStyle(TableStyle(style))
     return t
 
 
-def recommendation_box(priority, text):
-    row = [priority_badge(priority), Paragraph(text, BODY_STYLE)]
-    t = Table([row], colWidths=[20 * mm, 56 * mm], rowHeights=[6 * mm])
-    t.setStyle(
-        TableStyle(
-            [
-                ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 3),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 3),
-                ("TOPPADDING", (0, 0), (-1, -1), 1),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
-            ]
-        )
-    )
+def kpi_row(cards):
+    n = len(cards)
+    w = PAGE_W / n
+    cells = []
+    for label, value, status in cards:
+        inner = [Paragraph(label.upper(), KPI_LABEL), Spacer(1, 1.1 * mm),
+                 Paragraph(norm(value), KPI_VALUE), Spacer(1, 1.1 * mm)]
+        c = Table([[inner], [badge(status, width=w - 10 * mm)]],
+                  colWidths=[w - 3 * mm], rowHeights=[13 * mm, 5 * mm])
+        c.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), WHITE),
+            ("BOX", (0, 0), (-1, -1), 0.7, BORDER),
+            ("VALIGN", (0, 0), (0, 0), "MIDDLE"),
+            ("VALIGN", (0, 1), (0, 1), "TOP"),
+            ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 2), ("RIGHTPADDING", (0, 0), (-1, -1), 2),
+            ("TOPPADDING", (0, 0), (-1, -1), 1), ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ]))
+        cells.append(c)
+    t = Table([cells], colWidths=[w] * n)
+    t.setStyle(TableStyle([
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+    ]))
     return t
 
 
-def build_action_items(sections):
-    known = {
-        "content-security-policy": ("Missing Content Security Policy", "High"),
-        "x-frame-options": ("Missing X-Frame-Options", "High"),
-        "referrer-policy": ("Missing Referrer Policy", "High"),
-        "h1 count": ("Missing H1", "High"),
-    }
+def data_table(rows, width, with_status=True, headers=("Metric", "Value", "Status")):
+    """rows: (metric, value, status|None)"""
+    if with_status:
+        widths = [width * 0.35, width * 0.45, width * 0.20]
+        data = [[Paragraph(headers[0], TH), Paragraph(headers[1], TH), Paragraph(headers[2], TH)]]
+    else:
+        widths = [width * 0.38, width * 0.62]
+        data = [[Paragraph(headers[0], TH), Paragraph(headers[1], TH)]]
 
-    items = []
-    for s in sections:
-        sid = s.get("id", "")
-        for c in s.get("checks", []):
-            status = c.get("status")
-            if status not in ("fail", "warn"):
-                continue
-            name = c.get("name", "")
-            lname = name.lower()
-            if lname.startswith("http") and "//" in lname:
-                continue
-            if lname in known:
-                text, priority = known[lname]
-            elif sid == "security":
-                text = f"{name} requires attention"
-                priority = "High" if status == "fail" else "Medium"
-            elif sid in ("uptime", "ssl", "crawl"):
-                text = f"{name}: {normalize(c.get('value'))}"
-                priority = "High" if status == "fail" else "Medium"
-            elif sid in ("meta", "performance", "links"):
-                text = f"{name}: {normalize(c.get('value'))}"
-                priority = "Medium" if status == "fail" else "Low"
-            else:
-                continue
-            items.append((priority, text, 0 if status == "fail" else 1))
+    for row in rows:
+        name, value = row[0], row[1]
+        cells = [Paragraph(wrap(name, 30), BODY_B), Paragraph(wrap(value, 34), BODY)]
+        if with_status:
+            cells.append(badge(row[2] or "info", width=widths[2] - 3 * mm))
+        data.append(cells)
 
-    items.sort(key=lambda x: (0 if x[0] == "High" else 1 if x[0] == "Medium" else 2, x[2], x[1]))
-    unique = []
-    seen = set()
-    for p, t, _ in items:
-        if t in seen:
-            continue
-        seen.add(t)
-        unique.append((p, t))
-    return unique[:4]
+    t = Table(data, colWidths=widths, repeatRows=1)
+    style = [
+        ("BACKGROUND", (0, 0), (-1, 0), SOFT),
+        ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
+        ("INNERGRID", (0, 0), (-1, -1), 0.35, BORDER),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 3.5), ("RIGHTPADDING", (0, 0), (-1, -1), 3.5),
+        ("TOPPADDING", (0, 0), (-1, -1), 2), ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+    ]
+    for i in range(2, len(data), 2):
+        style.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FCFDFE")))
+    t.setStyle(TableStyle(style))
+    return t
+
+
+def block(title, table):
+    return [Paragraph(title, SECTION_STYLE), Spacer(1, 1.4 * mm), table]
+
+
+def footer_block():
+    line1 = Paragraph("Generated automatically by the Website Monitoring System", FOOTER)
+    line2 = Paragraph("Powered by Vercel · GitHub · GitHub Actions · Uptime Monitoring", FOOTER)
+    t = Table([[line1], [line2]], colWidths=[PAGE_W], rowHeights=[4.4 * mm, 4.4 * mm])
+    t.setStyle(TableStyle([
+        ("LINEABOVE", (0, 0), (-1, 0), 0.6, BORDER),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("TOPPADDING", (0, 0), (-1, -1), 1), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+    ]))
+    return t
+
+
+# ---------------------------------------------------------------------- build
+
+def perf_grade(score):
+    try:
+        s = int(score)
+    except (TypeError, ValueError):
+        return "—", "info"
+    if s >= 90:
+        return "A", "pass"
+    if s >= 80:
+        return "B", "pass"
+    if s >= 70:
+        return "C", "warn"
+    return "D", "fail"
 
 
 def build(payload, out_path):
     sections = payload.get("sections", [])
     state = payload.get("state", {})
     summary = payload.get("summary", {})
-    score = payload.get("score", "—")
+    score = payload.get("score", 0)
     site_url = payload.get("siteUrl", "—")
     generated_at = payload.get("generatedAt") or datetime.utcnow().isoformat()
+    git = payload.get("githubActivity", {}) or {}
+    rmeta = payload.get("reportMeta", {}) or {}
 
     uptime = section_by_id(sections, "uptime")
     ssl = section_by_id(sections, "ssl")
     links = section_by_id(sections, "links")
     crawl = section_by_id(sections, "crawl")
-    sec = section_by_id(sections, "security")
     meta = section_by_id(sections, "meta")
+    og = section_by_id(sections, "og")
     perf = section_by_id(sections, "performance")
 
-    summary_rows = [
-        ("Availability", (check_by_name(uptime, "Uptime") or {}).get("value", "—"), (check_by_name(uptime, "Uptime") or {}).get("status", "info")),
-        ("HTTP Status", (check_by_name(uptime, "HTTP status") or {}).get("value", "—"), (check_by_name(uptime, "HTTP status") or {}).get("status", "info")),
-        ("HTTPS", (check_by_name(uptime, "HTTPS") or {}).get("value", "—"), (check_by_name(uptime, "HTTPS") or {}).get("status", "info")),
-        ("SSL", (check_by_name(ssl, "Days until expiry") or {}).get("value", "—"), (check_by_name(ssl, "Days until expiry") or {}).get("status", "info")),
-        ("Broken Links", (check_by_name(links, "Broken links") or {}).get("value", "—"), (check_by_name(links, "Broken links") or {}).get("status", "info")),
-        ("robots.txt", (check_by_name(crawl, "robots.txt") or {}).get("value", "—"), (check_by_name(crawl, "robots.txt") or {}).get("status", "info")),
-        ("sitemap.xml", (check_by_name(crawl, "sitemap.xml") or {}).get("value", "—"), (check_by_name(crawl, "sitemap.xml") or {}).get("status", "info")),
-    ]
-
-    security_items = [c for c in sec.get("checks", []) if c.get("status") in ("fail", "warn")][:4]
-    seo_rows = [
-        ("Title", (check_by_name(meta, "Title") or {}).get("value", "—"), (check_by_name(meta, "Title") or {}).get("status", "info")),
-        ("Meta Description", (check_by_name(meta, "Meta description") or {}).get("value", "—"), (check_by_name(meta, "Meta description") or {}).get("status", "info")),
-        ("Canonical", (check_by_name(meta, "Canonical") or {}).get("value", "—"), (check_by_name(meta, "Canonical") or {}).get("status", "info")),
-        ("Structured Data", (check_by_name(meta, "Structured data (JSON-LD)") or {}).get("value", "—"), (check_by_name(meta, "Structured data (JSON-LD)") or {}).get("status", "info")),
-        ("H1 Status", (check_by_name(meta, "H1 count") or {}).get("value", "—"), (check_by_name(meta, "H1 count") or {}).get("status", "info")),
-    ]
-    perf_rows = [
-        ("Response Time", (check_by_name(uptime, "Response time") or {}).get("value", normalize(state.get("responseTimeMs", "—"))), (check_by_name(uptime, "Response time") or {}).get("status", "info")),
-        ("Total Page Size", (check_by_name(perf, "Total page weight") or {}).get("value", "—"), (check_by_name(perf, "Total page weight") or {}).get("status", "info")),
-        ("Failed Assets", (check_by_name(perf, "Failed asset requests") or {}).get("value", "—"), (check_by_name(perf, "Failed asset requests") or {}).get("status", "info")),
-    ]
-
-    action_items = build_action_items(sections)
-
-    doc = SimpleDocTemplate(
-        out_path,
-        pagesize=A4,
-        leftMargin=8 * mm,
-        rightMargin=8 * mm,
-        topMargin=7 * mm,
-        bottomMargin=7 * mm,
-    )
-
-    flow = []
-
-    header_left = [
-        Paragraph("Daily Website Health Report", TITLE_STYLE),
-        Paragraph(f"Website URL: {site_url}", SUB_STYLE),
-    ]
-    header_right_style = ParagraphStyle(
-        "header-right", parent=SUB_STYLE, alignment=TA_RIGHT, textColor=TEXT
-    )
-    header_right = [Paragraph(f"Generated: {generated_at}", header_right_style)]
-    header = Table([[header_left, header_right]], colWidths=[120 * mm, 72 * mm], rowHeights=[13 * mm])
-    header.setStyle(
-        TableStyle(
-            [
-                ("LINEBELOW", (0, 0), (-1, -1), 1.1, NAVY),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
-            ]
-        )
-    )
-    flow.extend([header, Spacer(1, 3 * mm)])
-
-    website_status = "Online" if summary.get("up") else "Offline"
-    website_status_state = "pass" if summary.get("up") else "fail"
+    up = bool(summary.get("up"))
     ssl_days = state.get("sslDaysRemaining")
-    ssl_value = f"{ssl_days} days" if isinstance(ssl_days, int) else "—"
-    ssl_state = (check_by_name(ssl, "Days until expiry") or {}).get("status", "info")
+    rtime = state.get("responseTimeMs")
 
-    cards = Table(
-        [[
-            metric_card("Overall Health Score", f"{score}/100", "pass" if int(score or 0) >= 85 else "warn" if int(score or 0) >= 70 else "fail"),
-            metric_card("Website Status", website_status, website_status_state),
-            metric_card("Response Time", f"{state.get('responseTimeMs', '—')} ms" if state.get("responseTimeMs") is not None else "—", (check_by_name(uptime, "Response time") or {}).get("status", "info")),
-            metric_card("SSL Expiry", ssl_value, ssl_state),
-        ]],
-        colWidths=[46 * mm, 46 * mm, 46 * mm, 46 * mm],
-        rowHeights=[17 * mm],
-    )
-    cards.setStyle(TableStyle([("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0)]))
-    flow.extend([Paragraph("Executive KPI Cards", SECTION_STYLE), cards, Spacer(1, 2.6 * mm)])
+    doc = SimpleDocTemplate(out_path, pagesize=A4,
+                            leftMargin=10 * mm, rightMargin=10 * mm,
+                            topMargin=9 * mm, bottomMargin=8 * mm,
+                            title="Daily Website Health Report")
 
-    left_col = [Paragraph("Website Health Summary", SECTION_STYLE), summary_table(summary_rows)]
+    flow = [header_block(site_url, generated_at, rmeta), Spacer(1, 2.6 * mm)]
 
-    security_block = [Paragraph("Security Summary", SECTION_STYLE)]
-    if security_items:
-        sec_rows = []
-        for item in security_items:
-            sec_rows.append([
-                badge(item.get("status", "warn")),
-                Paragraph(f"{item.get('name')}: {normalize(item.get('value'))}", BODY_STYLE),
-            ])
-        security_table = Table(sec_rows, colWidths=[20 * mm, 54 * mm], rowHeights=[5.4 * mm] * len(sec_rows))
-        security_table.setStyle(
-            TableStyle(
-                [
-                    ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
-                    ("LINEBELOW", (0, 0), (-1, -1), 0.3, BORDER),
-                    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 3),
-                    ("RIGHTPADDING", (0, 0), (-1, -1), 3),
-                    ("TOPPADDING", (0, 0), (-1, -1), 1),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
-                ]
-            )
-        )
-        security_block.append(security_table)
-    else:
-        security_block.append(Paragraph("No failed or warning security checks.", BODY_STYLE))
+    flow.append(meta_strip([
+        ("Environment", rmeta.get("environment", "Production")),
+        ("Monitoring interval", rmeta.get("monitoringInterval", "—")),
+        ("Git branch", rmeta.get("branch", git.get("branch", "—"))),
+        ("Latest deployment", rmeta.get("latestDeployment", "—")),
+    ]))
+    flow.append(Spacer(1, 2.8 * mm))
 
-    seo_block = [Paragraph("SEO Summary", SECTION_STYLE)]
-    seo_block.append(summary_table(seo_rows))
+    score_status = "pass" if int(score or 0) >= 85 else "warn" if int(score or 0) >= 70 else "fail"
+    http_v, http_s = cv(uptime, "HTTP status")
+    rt_v, rt_s = cv(uptime, "Response time", f"{rtime} ms" if rtime is not None else "—")
+    ssl_v, ssl_s = cv(ssl, "Days until expiry", f"{ssl_days} days" if isinstance(ssl_days, int) else "—")
+    uptime_pct = "100%" if up else "0%"
 
-    perf_block = [Paragraph("Performance Summary", SECTION_STYLE)]
-    perf_block.append(summary_table(perf_rows))
+    flow.append(kpi_row([
+        ("Health Score", f"{score}/100", score_status),
+        ("Website Status", "Online" if up else "Offline", "pass" if up else "fail"),
+        ("Response Time", f"{rtime} ms" if rtime is not None else "—", rt_s),
+        ("SSL Days Left", str(ssl_days) if isinstance(ssl_days, int) else "—", ssl_s),
+        ("HTTP Status", http_v, http_s),
+        ("Uptime (24h)", uptime_pct, "pass" if up else "fail"),
+    ]))
+    flow.append(Spacer(1, 3.2 * mm))
 
-    actions_block = [Paragraph("Action Items", SECTION_STYLE)]
-    if action_items:
-        for priority, text in action_items:
-            actions_block.append(recommendation_box(priority, text))
-            actions_block.append(Spacer(1, 1.2 * mm))
-    else:
-        actions_block.append(Paragraph("No urgent action items identified.", BODY_STYLE))
+    # ---- Website Health Summary
+    health_rows = [
+        ("Availability", *cv(uptime, "Uptime")),
+        ("HTTPS", *cv(uptime, "HTTPS")),
+        ("HTTP Status", http_v, http_s),
+        ("robots.txt", *cv(crawl, "robots.txt")),
+        ("sitemap.xml", *cv(crawl, "sitemap.xml")),
+        ("Broken Links", *cv(links, "Broken links")),
+        ("SSL Status", *cv(ssl, "Chain trusted")),
+        ("Domain Status", "Resolving" if up else "Unreachable", "pass" if up else "fail"),
+    ]
 
-    right_stack = []
-    right_stack.extend(security_block)
-    right_stack.append(Spacer(1, 2.2 * mm))
-    right_stack.extend(seo_block)
-    right_stack.append(Spacer(1, 2.2 * mm))
-    right_stack.extend(perf_block)
-    right_stack.append(Spacer(1, 2.2 * mm))
-    right_stack.extend(actions_block)
+    # ---- Performance Summary
+    perf_g, perf_gs = perf_grade(score)
+    perf_rows = [
+        ("Response Time", rt_v, rt_s),
+        ("Total Page Size", *cv(perf, "Total page weight")),
+        ("Failed Assets", *cv(perf, "Failed asset requests")),
+        ("Largest Contentful Paint", norm(state.get("lcp")), "info"),
+        ("First Contentful Paint", norm(state.get("fcp")), "info"),
+        ("DOM Load Time", norm(state.get("domLoad")), "info"),
+        ("TTFB", f"{rtime} ms" if rtime is not None else "—", rt_s),
+        ("CLS Score", norm(state.get("cls")), "info"),
+        ("Performance Grade", perf_g, perf_gs),
+    ]
 
-    body = Table([[left_col, right_stack]], colWidths=[108 * mm, 84 * mm])
-    body.setStyle(
-        TableStyle(
-            [
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-            ]
-        )
-    )
+    # ---- SEO Summary
+    title_c = check_by_name(meta, "Title")
+    title_val = norm(title_c.get("value"))
+    if "(" in title_val and "chars" in title_val:
+        title_val = title_val[title_val.rfind("(") + 1:].replace(")", "")
+    og_present = sum(1 for c in og.get("checks", []) if c.get("name", "").startswith("og:") and c.get("status") == "pass")
+    og_total = sum(1 for c in og.get("checks", []) if c.get("name", "").startswith("og:"))
+    robots_block = check_by_name(crawl, "robots.txt").get("status") == "fail"
+    seo_rows = [
+        ("Title Length", title_val, title_c.get("status", "info")),
+        ("Meta Description", *cv(meta, "Meta description")),
+        ("Canonical URL", *cv(meta, "Canonical")),
+        ("Structured Data", *cv(meta, "Structured data (JSON-LD)")),
+        ("Open Graph", f"{og_present}/{og_total} tags", "pass" if og_present == og_total and og_total else "warn"),
+        ("Twitter Card", *cv(og, "twitter:card")),
+        ("H1 Status", *cv(meta, "H1 count")),
+        ("Indexability", "Blocked" if robots_block else "Indexable", "fail" if robots_block else "pass"),
+    ]
 
+    # ---- Git & Deployment Summary
+    dstatus = norm(git.get("deploymentStatus"))
+    dstate = "pass" if dstatus.upper() == "READY" else "info" if dstatus in ("—", "Not connected", "Unknown") else "warn"
+    wstatus = norm(git.get("workflowStatus"))
+    wstate = "pass" if wstatus.lower() in ("success", "completed") else "info"
+    git_rows = [
+        ("Commit Message", git.get("commitMessage"), "info"),
+        ("Commit ID", git.get("commitSha"), "info"),
+        ("Commit Author", git.get("commitAuthor"), "info"),
+        ("Commit Time", git.get("commitDateTime"), "info"),
+        ("Current Branch", git.get("branch"), "info"),
+        ("Repository", git.get("repository"), "info"),
+        ("Deployment Platform", git.get("platform", "Vercel"), "info"),
+        ("Deployment Status", dstatus, dstate),
+        ("Deployment Duration", git.get("deploymentDuration"), "info"),
+        ("Build Time", git.get("buildTime"), "info"),
+        ("Previous Deployment", git.get("previousDeploymentTime"), "info"),
+        ("Commits Today", git.get("commitsToday"), "info"),
+        ("Last Successful Build", git.get("lastSuccessfulBuild"), "info"),
+        ("Workflow Name", git.get("workflowName"), "info"),
+        ("Workflow Status", wstatus, wstate),
+        ("Workflow Run", git.get("workflowRunNumber"), "info"),
+        ("Workflow Duration", git.get("workflowDuration"), "info"),
+    ]
+    git_rows = [(n, norm(v), s) for n, v, s in git_rows]
+
+    left = []
+    left += block("Website Health Summary", data_table(health_rows, COL_L))
+    left.append(Spacer(1, 3 * mm))
+    left += block("Performance Summary", data_table(perf_rows, COL_L))
+
+    right = []
+    right += block("SEO Summary", data_table(seo_rows, COL_R))
+    right.append(Spacer(1, 3 * mm))
+    right += block("Git & Deployment Summary", data_table(git_rows, COL_R))
+
+    body = Table([[left, right]], colWidths=[COL_L, COL_R], hAlign="LEFT")
+    body.setStyle(TableStyle([
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (0, 0), 0), ("RIGHTPADDING", (0, 0), (0, 0), COL_GAP / 2),
+        ("LEFTPADDING", (1, 0), (1, 0), COL_GAP / 2), ("RIGHTPADDING", (1, 0), (1, 0), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+    ]))
     flow.append(body)
+    flow.append(Spacer(1, 3 * mm))
+    flow.append(footer_block())
+
     doc.build(flow)
 
 
 def main():
     if len(sys.argv) < 2:
         raise SystemExit("Usage: pdf_reportlab.py <output_path>")
-    out_path = sys.argv[1]
     payload = json.loads(sys.stdin.read() or "{}")
-    build(payload, out_path)
+    build(payload, sys.argv[1])
 
 
 if __name__ == "__main__":
