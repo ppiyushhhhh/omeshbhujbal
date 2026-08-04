@@ -10,7 +10,7 @@ export async function deploymentCheck(state) {
   const checks = [];
 
   if (config.vercel.token) {
-    const params = new URLSearchParams({ limit: "1" });
+    const params = new URLSearchParams({ limit: "2" });
     if (config.vercel.projectId) params.set("projectId", config.vercel.projectId);
     if (config.vercel.teamId) params.set("teamId", config.vercel.teamId);
 
@@ -22,6 +22,7 @@ export async function deploymentCheck(state) {
       const d = data?.deployments?.[0];
       if (d) {
         state.deployment = d;
+        state.previousDeployment = data?.deployments?.[1] || null;
         const ready = d.state === "READY" || d.readyState === "READY";
         checks.push(check("Latest deployment state", ready ? PASS : FAIL, d.state || d.readyState));
         checks.push(check("Deployment URL", INFO, d.url));

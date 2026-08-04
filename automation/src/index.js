@@ -68,19 +68,41 @@ async function run() {
   );
 
   const { renderPdf } = await import("./report/pdf.js");
+  const dep = state.deployment || {};
+  const prevDep = state.previousDeployment || null;
+  const fmt = (t) =>
+    t ? new Date(t).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" }) : "—";
+  const durMin = (a, b) => (a && b ? `${Math.max(0, Math.round((b - a) / 1000))} s` : "—");
+
   const githubActivity = {
-    repository: process.env.GITHUB_REPOSITORY || "—",
+    repository: state.repository?.repoName || process.env.GITHUB_REPOSITORY || "—",
     branch: state.repository?.commit?.branch || process.env.GITHUB_REF_NAME || "—",
     commitSha: state.repository?.commit?.hash || "—",
     commitMessage: state.repository?.commit?.subject || "—",
     commitAuthor: state.repository?.commit?.author || "—",
     commitDateTime: state.repository?.commit?.date || "—",
+    commitsToday: state.repository?.commitsToday ?? "—",
+    platform: "Vercel",
+    deploymentStatus: dep.state || dep.readyState || (config.vercel.token ? "Unknown" : "Not connected"),
+    deploymentTime: fmt(dep.created || dep.createdAt),
+    deploymentDuration: durMin(dep.buildingAt || dep.created, dep.ready),
+    buildTime: durMin(dep.buildingAt, dep.ready),
+    previousDeploymentTime: fmt(prevDep?.created || prevDep?.createdAt),
+    lastSuccessfulBuild:
+      (dep.state || dep.readyState) === "READY" ? fmt(dep.ready || dep.created) : fmt(prevDep?.ready),
     workflowName: process.env.GITHUB_WORKFLOW || "Daily Website Health Report",
     workflowRunNumber: process.env.GITHUB_RUN_NUMBER ? `#${process.env.GITHUB_RUN_NUMBER}` : "—",
-    workflowStatus: process.env.WORKFLOW_STATUS || "Success",
+    workflowStatus: process.env.WORKFLOW_STATUS || (process.env.GITHUB_ACTIONS ? "Running" : "Local run"),
+    workflowDuration: process.env.WORKFLOW_DURATION || "—",
+  };
+  const reportMeta = {
+    environment: process.env.ENVIRONMENT || "Production",
+    monitoringInterval: process.env.MONITORING_INTERVAL || "Daily · 21:00 IST",
+    branch: githubActivity.branch,
+    latestDeployment: githubActivity.deploymentTime,
   };
   await renderPdf(
-    { sections, score, state, summary, siteUrl: config.siteUrl, generatedAt: nowIST(), githubActivity },
+    { sections, score, state, summary, siteUrl: config.siteUrl, generatedAt: nowIST(), githubActivity, reportMeta },
     pdfPath
   );
   if (!fs.existsSync(pdfPath)) {
