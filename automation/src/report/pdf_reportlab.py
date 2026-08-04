@@ -44,15 +44,15 @@ def S(name, **kw):
 TITLE_STYLE = S("title", fontName="Helvetica-Bold", fontSize=15, leading=17, textColor=WHITE)
 HEADER_SUB = S("hsub", fontName="Helvetica", fontSize=7.6, leading=9.6, textColor=colors.HexColor("#CBD5E1"))
 HEADER_SUB_R = S("hsubr", parent=HEADER_SUB, alignment=TA_RIGHT)
-META_LABEL = S("mlabel", fontName="Helvetica", fontSize=6, leading=7.4, textColor=MUTED)
-META_VALUE = S("mvalue", fontName="Helvetica-Bold", fontSize=7.6, leading=9, textColor=NAVY)
-SECTION_STYLE = S("section", fontName="Helvetica-Bold", fontSize=8.8, leading=10.5, textColor=NAVY)
-BODY = S("body", fontName="Helvetica", fontSize=7, leading=8.6, textColor=TEXT)
+META_LABEL = S("mlabel", fontName="Helvetica", fontSize=6.6, leading=8, textColor=MUTED)
+META_VALUE = S("mvalue", fontName="Helvetica-Bold", fontSize=8.4, leading=10, textColor=NAVY)
+SECTION_STYLE = S("section", fontName="Helvetica-Bold", fontSize=10, leading=12, textColor=NAVY)
+BODY = S("body", fontName="Helvetica", fontSize=8.2, leading=10, textColor=TEXT)
 BODY_B = S("bodyb", parent=BODY, fontName="Helvetica-Bold", textColor=SLATE)
-TH = S("th", fontName="Helvetica-Bold", fontSize=6.2, leading=7.6, textColor=MUTED)
-KPI_LABEL = S("kpilabel", fontName="Helvetica", fontSize=5.7, leading=7, textColor=MUTED, alignment=TA_CENTER)
-KPI_VALUE = S("kpivalue", fontName="Helvetica-Bold", fontSize=12.5, leading=14, textColor=NAVY, alignment=TA_CENTER)
-FOOTER = S("footer", fontName="Helvetica", fontSize=6.4, leading=8, textColor=MUTED, alignment=TA_CENTER)
+TH = S("th", fontName="Helvetica-Bold", fontSize=6.8, leading=8.2, textColor=MUTED)
+KPI_LABEL = S("kpilabel", fontName="Helvetica", fontSize=6.2, leading=7.4, textColor=MUTED, alignment=TA_CENTER)
+KPI_VALUE = S("kpivalue", fontName="Helvetica-Bold", fontSize=14, leading=16, textColor=NAVY, alignment=TA_CENTER)
+FOOTER = S("footer", fontName="Helvetica", fontSize=7.2, leading=9, textColor=MUTED, alignment=TA_CENTER)
 
 
 def norm(v):
@@ -64,16 +64,16 @@ def norm(v):
 def wrap(text, limit=46):
     """Escape and hard-truncate overly long values so nothing overflows."""
     t = norm(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    if len(t) > limit * 3:
-        t = t[: limit * 3 - 1] + "\u2026"
+    if len(t) > limit:
+        t = t[: limit - 1] + "\u2026"
     return t
 
 
 def badge(status, width=14 * mm):
     label, color = STATUS_MAP.get(status, ("INFO", MUTED))
-    bstyle = S("badge", fontName="Helvetica-Bold", fontSize=5.9, leading=7,
+    bstyle = S("badge", fontName="Helvetica-Bold", fontSize=6.4, leading=7.6,
                alignment=TA_CENTER, textColor=color)
-    t = Table([[Paragraph(label, bstyle)]], colWidths=[width], rowHeights=[3.8 * mm])
+    t = Table([[Paragraph(label, bstyle)]], colWidths=[width], rowHeights=[4.4 * mm])
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), colors.Color(color.red, color.green, color.blue, alpha=0.10)),
         ("BOX", (0, 0), (-1, -1), 0.4, colors.Color(color.red, color.green, color.blue, alpha=0.55)),
@@ -110,7 +110,7 @@ def header_block(site_url, generated_at, meta):
             Paragraph(wrap(site_url, 60), HEADER_SUB)]
     right = [Paragraph(f"Generated {norm(generated_at)}", HEADER_SUB_R),
              Paragraph("Automated monitoring · executive summary", HEADER_SUB_R)]
-    t = Table([[left, right]], colWidths=[118 * mm, 72 * mm], rowHeights=[16 * mm])
+    t = Table([[left, right]], colWidths=[118 * mm, 72 * mm], rowHeights=[18 * mm])
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, -1), NAVY),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
@@ -125,7 +125,7 @@ def meta_strip(items):
     for label, value in items:
         cells.append([Paragraph(label.upper(), META_LABEL), Paragraph(wrap(value, 28), META_VALUE)])
     w = PAGE_W / len(items)
-    t = Table([cells], colWidths=[w] * len(items), rowHeights=[9.5 * mm])
+    t = Table([cells], colWidths=[w] * len(items), rowHeights=[11 * mm])
     style = [
         ("BACKGROUND", (0, 0), (-1, -1), SOFT),
         ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
@@ -147,7 +147,7 @@ def kpi_row(cards):
         inner = [Paragraph(label.upper(), KPI_LABEL), Spacer(1, 1.1 * mm),
                  Paragraph(norm(value), KPI_VALUE), Spacer(1, 1.1 * mm)]
         c = Table([[inner], [badge(status, width=w - 10 * mm)]],
-                  colWidths=[w - 3 * mm], rowHeights=[13 * mm, 5 * mm])
+                  colWidths=[w - 3 * mm], rowHeights=[15 * mm, 6 * mm])
         c.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, -1), WHITE),
             ("BOX", (0, 0), (-1, -1), 0.7, BORDER),
@@ -179,7 +179,7 @@ def data_table(rows, width, with_status=True, headers=("Metric", "Value", "Statu
 
     for row in rows:
         name, value = row[0], row[1]
-        cells = [Paragraph(wrap(name, 30), BODY_B), Paragraph(wrap(value, 34), BODY)]
+        cells = [Paragraph(wrap(name, 30), BODY_B), Paragraph(wrap(value, 44), BODY)]
         if with_status:
             cells.append(badge(row[2] or "info", width=widths[2] - 3 * mm))
         data.append(cells)
@@ -190,8 +190,8 @@ def data_table(rows, width, with_status=True, headers=("Metric", "Value", "Statu
         ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
         ("INNERGRID", (0, 0), (-1, -1), 0.35, BORDER),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 3.5), ("RIGHTPADDING", (0, 0), (-1, -1), 3.5),
-        ("TOPPADDING", (0, 0), (-1, -1), 2), ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4), ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 4), ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
     ]
     for i in range(2, len(data), 2):
         style.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FCFDFE")))
@@ -211,20 +211,20 @@ def pair_grid(rows, columns=3):
         for c in cols:
             name, value, status = c[r]
             row.append(Paragraph(wrap(name, 26), BODY_B) if name else Paragraph("", BODY))
-            row.append(Paragraph(wrap(value, 34), BODY) if name else Paragraph("", BODY))
+            row.append(Paragraph(wrap(value, 30), BODY) if name else Paragraph("", BODY))
         data.append(row)
 
     unit = PAGE_W / columns
     widths = []
     for _ in range(columns):
         widths += [unit * 0.42, unit * 0.58]
-    t = Table(data, colWidths=widths, rowHeights=[5.0 * mm] * per)
+    t = Table(data, colWidths=widths)
     style = [
         ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
         ("INNERGRID", (0, 0), (-1, -1), 0.35, BORDER),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 3.5), ("RIGHTPADDING", (0, 0), (-1, -1), 3.5),
-        ("TOPPADDING", (0, 0), (-1, -1), 1.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5),
+        ("LEFTPADDING", (0, 0), (-1, -1), 4), ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 4), ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
     ]
     for i in range(0, per, 2):
         style.append(("BACKGROUND", (0, i), (-1, i), colors.HexColor("#FCFDFE")))
