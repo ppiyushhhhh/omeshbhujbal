@@ -179,12 +179,16 @@ def data_table(rows, width, with_status=True, headers=("Metric", "Value", "Statu
 
     for row in rows:
         name, value = row[0], row[1]
+        if not name:
+            data.append([Paragraph("", BODY)] * (3 if with_status else 2))
+            continue
         cells = [Paragraph(wrap(name, 30), BODY_B), Paragraph(wrap(value, 44), BODY)]
         if with_status:
             cells.append(badge(row[2] or "info", width=widths[2] - 3 * mm))
         data.append(cells)
 
-    t = Table(data, colWidths=widths, repeatRows=1)
+    t = Table(data, colWidths=widths, repeatRows=1,
+              rowHeights=[6 * mm] + [9 * mm] * (len(data) - 1))
     style = [
         ("BACKGROUND", (0, 0), (-1, 0), SOFT),
         ("BOX", (0, 0), (-1, -1), 0.6, BORDER),
@@ -339,12 +343,12 @@ def build(payload, out_path):
         ("Response Time", rt_v, rt_s),
         ("Total Page Size", *cv(perf, "Total page weight")),
         ("Failed Assets", *cv(perf, "Failed asset requests")),
-        ("Largest Contentful Paint", norm(state.get("lcp")), "info"),
-        ("First Contentful Paint", norm(state.get("fcp")), "info"),
-        ("DOM Load Time", norm(state.get("domLoad")), "info"),
+        ("LCP", norm(state.get("lcp")), "info"),
+        ("FCP", norm(state.get("fcp")), "info"),
+        ("DOM Load", norm(state.get("domLoad")), "info"),
         ("TTFB", f"{rtime} ms" if rtime is not None else "—", rt_s),
         ("CLS Score", norm(state.get("cls")), "info"),
-        ("Performance Grade", perf_g, perf_gs),
+        ("Perf. Grade", perf_g, perf_gs),
     ]
 
     # ---- SEO Summary
@@ -357,7 +361,7 @@ def build(payload, out_path):
     robots_block = check_by_name(crawl, "robots.txt").get("status") == "fail"
     seo_rows = [
         ("Title Length", title_val, title_c.get("status", "info")),
-        ("Meta Description", *cv(meta, "Meta description")),
+        ("Meta Desc.", *cv(meta, "Meta description")),
         ("Canonical URL", *cv(meta, "Canonical")),
         ("Structured Data", *cv(meta, "Structured data (JSON-LD)")),
         ("Open Graph", f"{og_present}/{og_total} tags", "pass" if og_present == og_total and og_total else "warn"),
@@ -391,6 +395,11 @@ def build(payload, out_path):
         ("Workflow Duration", git.get("workflowDuration"), "info"),
     ]
     git_rows = [(n, norm(v), s) for n, v, s in git_rows]
+
+    _n = max(len(health_rows), len(perf_rows), len(seo_rows))
+    for _rows in (health_rows, perf_rows, seo_rows):
+        while len(_rows) < _n:
+            _rows.append(("", "", "info"))
 
     def col(title, rows):
         return [Paragraph(title, SECTION_STYLE), Spacer(1, 1.4 * mm), data_table(rows, COL3)]
