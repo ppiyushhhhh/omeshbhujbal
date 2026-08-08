@@ -1,10 +1,9 @@
 name: Daily Website Health Report
 
 on:
-  # Schedule disabled for now — re-enable by uncommenting the cron block below.
-  # schedule:
-  #   # 21:00 IST == 15:30 UTC
-  #   - cron: "30 15 * * *"
+  schedule:
+    # 21:00 IST == 15:30 UTC
+    - cron: "30 15 * * *"
   workflow_dispatch:
     inputs:
       site_url:
