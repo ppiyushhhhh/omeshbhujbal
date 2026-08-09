@@ -113,7 +113,7 @@ const ConnectSection = () => {
 
     try {
       const payload = new FormData();
-      // Web3Forms field names. Add your access_key when ready.
+      payload.append("access_key", "e5cba0bd-ffa8-4790-b9ca-4c2fdd9961cb");
       payload.append("name", formData.name.trim());
       payload.append("email", formData.email.trim());
       payload.append("subject", formData.subject.trim());
@@ -128,21 +128,22 @@ const ConnectSection = () => {
 
       if (response.ok && data.success) {
         setStatus("success");
-        setStatusMessage("Thank you for reaching out. Your message has been sent successfully.");
+        setStatusMessage(
+          "Thank you for reaching out. Your message has been received successfully.",
+        );
         setFormData(initialFormData);
         setTouched({ name: false, email: false, subject: false, message: false });
         setErrors({});
       } else {
-        throw new Error(data.message || "Something went wrong. Please try again.");
+        throw new Error(data.message || "Unable to send your message. Please try again.");
       }
     } catch (error) {
       setStatus("error");
-      setStatusMessage(
-        error instanceof Error ? error.message : "Submission failed. Please try again later.",
-      );
+      setStatusMessage("Unable to send your message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (
@@ -271,7 +272,8 @@ const ConnectSection = () => {
 
               {status === "success" && (
                 <div className="p-4 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm">
-                  {statusMessage}
+                  <p className="font-semibold mb-1">Message Sent Successfully</p>
+                  <p>{statusMessage}</p>
                 </div>
               )}
 
