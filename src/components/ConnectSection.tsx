@@ -272,7 +272,8 @@ const ConnectSection = () => {
 
               {status === "success" && (
                 <div className="p-4 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm">
-                  {statusMessage}
+                  <p className="font-semibold mb-1">Message Sent Successfully</p>
+                  <p>{statusMessage}</p>
                 </div>
               )}
 
