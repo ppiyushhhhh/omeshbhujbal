@@ -270,13 +270,13 @@ const ConnectSection = () => {
               </div>
 
               {status === "success" && (
-                <div className="p-4 rounded-lg bg-emerald-50 text-emerald-800 text-sm border border-emerald-200">
+                <div className="p-4 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm">
                   {statusMessage}
                 </div>
               )}
 
               {status === "error" && (
-                <div className="p-4 rounded-lg bg-red-50 text-red-800 text-sm border border-red-200">
+                <div className="p-4 rounded-lg bg-destructive/10 text-destructive border border-destructive/20 text-sm">
                   {statusMessage}
                 </div>
               )}
