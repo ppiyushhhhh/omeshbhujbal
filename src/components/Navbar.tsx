@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 const navItems = [
   { label: "About", href: "#about", id: "about" },
   { label: "Experience", href: "#experience", id: "experience" },
-  { label: "Achievements", href: "#achievements", id: "achievements" },
-  { label: "Awards", href: "#awards", id: "awards" },
-  { label: "Skills", href: "#skills", id: "skills" },
-  { label: "Education", href: "#education", id: "education" },
+  { label: "Impact", href: "#achievements", id: "achievements" },
+  { label: "Recognition", href: "#awards", id: "awards" },
   { label: "Connect", href: "#connect", id: "connect" },
 ];
 
@@ -100,8 +98,8 @@ const Navbar = () => {
       transition={{ duration: 0.8, delay: 0.2 }}
       aria-label="Primary"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-[0_10px_30px_-10px_rgba(0,0,0,0.18)]"
+          scrolled
+            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -143,6 +141,14 @@ const Navbar = () => {
               </a>
             );
           })}
+          <a
+            href="https://www.linkedin.com/in/omeshb/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 border-l border-border pl-5 text-[11px] uppercase tracking-[0.16em] text-primary transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            LinkedIn ↗
+          </a>
         </div>
 
         <button

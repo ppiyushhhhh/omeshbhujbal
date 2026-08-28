@@ -19,15 +19,15 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
+    <section id="about" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <div className="about-reveal max-w-4xl">
-          <p className="section-label">About</p>
-
-            <h2 className="section-title mb-8">
-              Driving digital transformation at enterprise scale
-            </h2>
-            <div className="space-y-5 text-muted-foreground leading-relaxed">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+          <div className="lg:col-span-4 about-reveal">
+            <p className="section-label">01 / About</p>
+            <h2 className="section-title">22+ years of turning complex technology challenges into measurable business outcomes.</h2>
+          </div>
+          <div className="lg:col-span-7 lg:col-start-6 about-reveal">
+            <div className="space-y-5 text-muted-foreground leading-relaxed max-w-2xl">
               <p>
                 Senior Technology Leader with over 22 years' experience across leading Indian & multi-national companies,
                 including 16 years in telecom technology with Vodafone Idea Ltd., with additional experience in
@@ -42,6 +42,20 @@ const AboutSection = () => {
                 Partnered with CXOs & business leaders to create technology roadmaps delivering innovative,
                 cost-effective, highly scalable solutions with tangible business value.
               </p>
+            </div>
+
+            <div className="mt-12 grid sm:grid-cols-3 gap-8 border-t border-border pt-7">
+              {[
+                ["01", "Digital Transformation"],
+                ["02", "AI & Analytics"],
+                ["03", "Enterprise Technology"],
+              ].map(([number, label]) => (
+                <div key={number} className="about-reveal">
+                  <p className="font-serif text-3xl text-primary">{number}</p>
+                  <p className="mt-3 text-xs uppercase tracking-[0.16em] text-foreground">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
