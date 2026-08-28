@@ -13,10 +13,10 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        serif: ['DM Serif Display', 'Georgia', 'serif'],
-      },
+        fontFamily: {
+          sans: ['Work Sans', 'system-ui', 'sans-serif'],
+          serif: ['Instrument Serif', 'Georgia', 'serif'],
+        },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

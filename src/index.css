@@ -1,40 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 220 20% 10%;
+    --background: 43 30% 96%;
+    --foreground: 216 11% 9%;
 
-    --card: 40 15% 95%;
-    --card-foreground: 220 20% 10%;
+    --card: 42 24% 94%;
+    --card-foreground: 216 11% 9%;
 
-    --popover: 40 15% 95%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 42 24% 94%;
+    --popover-foreground: 216 11% 9%;
 
-    --primary: 220 14% 30%;
-    --primary-foreground: 40 20% 97%;
+    --primary: 350 71% 36%;
+    --primary-foreground: 43 30% 96%;
 
-    --secondary: 40 10% 92%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 43 16% 91%;
+    --secondary-foreground: 216 11% 9%;
 
-    --muted: 40 10% 92%;
-    --muted-foreground: 220 12% 38%;
+    --muted: 43 16% 91%;
+    --muted-foreground: 216 2% 42%;
 
-    --accent: 220 14% 30%;
-    --accent-foreground: 40 20% 97%;
+    --accent: 350 71% 36%;
+    --accent-foreground: 43 30% 96%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 350 71% 36%;
+    --destructive-foreground: 43 30% 96%;
 
-    --border: 40 10% 88%;
-    --input: 40 10% 88%;
-    --ring: 220 14% 30%;
+    --border: 45 11% 85%;
+    --input: 45 11% 85%;
+    --ring: 350 71% 36%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
   }
 }
 
@@ -45,45 +43,50 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: 'Work Sans', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'DM Serif Display', Georgia, serif;
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
   }
 }
 
 @layer components {
   .section-container {
-    @apply max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 w-full;
+    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full;
   }
 
   .section-label {
-    @apply text-xs uppercase tracking-[0.25em] text-muted-foreground font-sans font-medium mb-4;
+    @apply text-[11px] uppercase tracking-[0.24em] text-primary font-sans font-semibold mb-5;
   }
 
   .section-title {
-    @apply text-[1.75rem] sm:text-3xl md:text-4xl lg:text-5xl font-normal text-foreground leading-tight;
+    @apply text-4xl sm:text-5xl md:text-6xl font-normal text-foreground leading-[0.98];
   }
 
   .subtle-card {
-    @apply bg-card rounded-xl p-6 md:p-8 border border-border transition-all duration-300;
+    @apply bg-card p-6 md:p-8 border border-border transition-colors duration-300;
   }
 
   .subtle-card:hover {
-    @apply border-foreground/20;
+    @apply border-foreground/30;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-3.5 text-sm font-sans font-medium tracking-wide rounded-full bg-foreground text-background transition-all duration-300 hover:opacity-80;
+    @apply inline-flex items-center justify-center px-6 py-3.5 text-[11px] uppercase tracking-[0.14em] rounded-md bg-primary text-primary-foreground transition-colors duration-300 hover:bg-foreground;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-8 py-3.5 text-sm font-sans font-medium tracking-wide rounded-full border border-foreground/20 text-foreground transition-all duration-300 hover:bg-foreground hover:text-background;
+    @apply inline-flex items-center justify-center px-6 py-3.5 text-[11px] uppercase tracking-[0.14em] rounded-md border border-foreground/20 text-foreground transition-colors duration-300 hover:border-primary hover:text-primary;
   }
 
   .divider {
-    @apply w-12 h-px bg-foreground/20;
+    @apply w-16 h-px bg-primary;
+  }
+
+  .editorial-rule {
+    @apply border-t border-border;
   }
 }
 
@@ -92,7 +95,7 @@ html {
 }
 
 section[id] {
-  scroll-margin-top: 80px;
+  scroll-margin-top: 92px;
 }
 
 ::-webkit-scrollbar {
@@ -106,4 +109,15 @@ section[id] {
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
   border-radius: 2px;
+}
+
+::selection {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
