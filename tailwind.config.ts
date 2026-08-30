@@ -16,6 +16,7 @@ export default {
         fontFamily: {
           sans: ['Work Sans', 'system-ui', 'sans-serif'],
           serif: ['Instrument Serif', 'Georgia', 'serif'],
+          display: ['DM Serif Display', 'Georgia', 'serif'],
         },
       colors: {
         border: "hsl(var(--border))",

@@ -4,63 +4,69 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const skillGroups = [
+const domains = [
   {
-    title: "Business Intelligence & Analytics",
-    items: ["Data Warehousing", "Cognos", "Big Data", "Tableau", "Advanced Analytics"],
+    number: "01",
+    title: "Digital & Enterprise Transformation",
+    summary: "Shaping technology roadmaps that connect operating-model change with measurable business value.",
+    capabilities: "Digital strategy · Enterprise IT · Cloud & managed services · Mobile payments",
   },
   {
-    title: "AI / ML & Automation",
-    items: ["Machine Learning", "SAS Campaign Management", "Customer Value Management", "Predictive Analytics"],
+    number: "02",
+    title: "Data, AI & Customer Intelligence",
+    summary: "Turning enterprise data into decision systems, customer relevance, and scalable growth.",
+    capabilities: "Data warehousing · Big Data · Machine learning · Predictive analytics · CVM",
   },
   {
-    title: "Telecom OSS / BSS",
-    items: ["BSS Transformation", "Revenue Assurance", "Fraud Management", "VoLTE / IMS", "Number Portability"],
+    number: "03",
+    title: "Technology Operations & Platforms",
+    summary: "Modernizing complex, always-on technology estates while protecting continuity and performance.",
+    capabilities: "IT operations · BSS transformation · VoLTE / IMS · SLA management · Automation",
   },
   {
-    title: "Digital & Enterprise IT",
-    items: ["Digital Strategy", "Cloud & Managed Services", "IT Operations", "SLA Management", "Mobile Payments"],
+    number: "04",
+    title: "Risk, Revenue & Performance",
+    summary: "Applying governance and insight to strengthen controls, commercial outcomes, and executive visibility.",
+    capabilities: "Revenue assurance · Fraud management · Advanced analytics · Tableau · Cognos",
   },
 ];
 
 const SkillsSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".skill-group", {
-        opacity: 0, y: 30, duration: 0.6, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: ".skills-wrap", start: "top 80%" },
+      gsap.fromTo(".domain-row", { opacity: 0, y: 22 }, {
+        opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out",
+        scrollTrigger: { trigger: ".domains-list", start: "top 82%", once: true },
       });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
+    <section id="skills" ref={sectionRef} className="bg-card py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-16">
-          <div className="md:col-span-4">
-            <p className="section-label">Expertise</p>
-            <h2 className="section-title">Skills</h2>
-          </div>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <header className="lg:col-span-4">
+            <p className="section-label">05 / Expertise</p>
+            <h2 className="section-title">Leadership domains</h2>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">A strategic practice built across technology, transformation, data, and operational leadership.</p>
+          </header>
 
-          <div className="md:col-span-8 skills-wrap grid sm:grid-cols-2 gap-10">
-            {skillGroups.map((group) => (
-              <div key={group.title} className="skill-group">
-                <h3 className="font-serif text-lg text-foreground mb-4">{group.title}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="text-xs px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors duration-300"
-                    >
-                      {item}
-                    </span>
-                  ))}
+          <div className="domains-list border-t border-border lg:col-span-8">
+            {domains.map((domain) => (
+              <article key={domain.number} className="domain-row grid gap-4 border-b border-border py-8 sm:grid-cols-[4rem_1fr] md:py-10">
+                <p className="font-serif text-2xl text-primary">{domain.number}</p>
+                <div className="grid gap-4 md:grid-cols-2 md:gap-10">
+                  <div>
+                    <h3 className="font-serif text-2xl leading-tight text-foreground md:text-3xl">{domain.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{domain.summary}</p>
+                  </div>
+                  <p className="text-xs leading-6 uppercase tracking-[0.12em] text-muted-foreground md:pt-1">{domain.capabilities}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>

@@ -5,42 +5,55 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const achievements = [
-  { metric: "30%", title: "Cost Reduction", description: "Targeted through CVM transformation leveraging AI/ML for 400M customers." },
-  { metric: "400M", title: "Customers", description: "Largest telco CVM implementation with omni-channel platform delivery." },
-  { metric: "2,000+", title: "KPIs Unified", description: "'One MIS' transformation with unified DWH, Big Data, and performance dashboards." },
-  { metric: "4×", title: "Recharge Growth", description: "Online transactions growth and 1M number portability requests via digital transformation." },
-  { metric: "₹320M", title: "Revenue Uplift", description: "Annual VAS subscription revenue increase through Six Sigma CX improvements." },
-  { metric: "15%", title: "Under Budget", description: "BSS transformation for VoLTE in 3 months with 4 partners — fastest in industry." },
+  { metric: "30%", title: "Cost reduction", context: "AI-led customer value management", description: "Targeted through a CVM transformation designed around machine learning and decisioning for 400 million customers." },
+  { metric: "400M", title: "Customers", context: "Enterprise-scale customer platforms", description: "Delivered one of the largest telecom CVM implementations through an integrated omni-channel platform." },
+  { metric: "2,000+", title: "KPIs unified", context: "A single source of enterprise truth", description: "Created the ‘One MIS’ transformation by aligning data warehousing, Big Data, and performance dashboards." },
+  { metric: "4×", title: "Recharge growth", context: "Digital commerce transformation", description: "Scaled online transactions while supporting one million mobile number portability requests." },
+  { metric: "₹320M", title: "Revenue uplift", context: "Customer experience as a growth lever", description: "Generated annual VAS subscription revenue uplift through disciplined Six Sigma customer experience improvements." },
+  { metric: "15%", title: "Under budget", context: "Complex delivery, accelerated", description: "Completed a four-partner BSS transformation for VoLTE in three months—among the fastest in the industry." },
 ];
 
 const AchievementsSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".ach-card", {
-        opacity: 0, y: 30, duration: 0.6, stagger: 0.08, ease: "power3.out",
-        scrollTrigger: { trigger: ".ach-grid", start: "top 80%" },
+      gsap.fromTo(".impact-row", { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power3.out",
+        scrollTrigger: { trigger: ".impact-list", start: "top 82%", once: true },
       });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="achievements" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32 bg-card">
+    <section id="achievements" ref={sectionRef} className="bg-card py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <p className="section-label">Impact</p>
-        <h2 className="section-title mb-14">Key achievements</h2>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <header className="lg:col-span-4">
+            <p className="section-label">03 / Impact</p>
+            <h2 className="section-title">Outcomes at enterprise scale.</h2>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Selected outcomes from transformation programs where technology strategy translated into measurable commercial value.
+            </p>
+          </header>
 
-        <div className="ach-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden">
-          {achievements.map((a, i) => (
-            <div key={i} className="ach-card bg-card p-8 md:p-10 group hover:bg-background transition-colors duration-300">
-              <p className="font-serif text-4xl md:text-5xl text-foreground mb-3">{a.metric}</p>
-              <p className="text-sm font-medium text-foreground mb-2 uppercase tracking-wider">{a.title}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">{a.description}</p>
-            </div>
-          ))}
+          <div className="impact-list border-t border-border lg:col-span-8">
+            {achievements.map((item, index) => (
+              <article key={item.title} className="impact-row grid gap-5 border-b border-border py-8 sm:grid-cols-[0.8fr_1.2fr] md:py-10">
+                <div>
+                  <p className="font-display text-6xl leading-none text-primary sm:text-7xl md:text-8xl">{item.metric}</p>
+                  <h3 className="mt-3 font-sans text-xs font-semibold uppercase tracking-[0.16em] text-foreground">{item.title}</h3>
+                </div>
+                <div className="sm:pt-2">
+                  <p className="font-serif text-2xl leading-tight text-foreground">{item.context}</p>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">{item.description}</p>
+                  <p className="mt-5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Impact / 0{index + 1}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
