@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import leelaLogo from "@/assets/logos/the-leela.jfif";
 import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
@@ -24,7 +24,6 @@ type Company = {
   badge?: string;
   summary?: string;
   logo: string | null;
-  accent?: string; // tailwind color class for accent line
   roles: Role[];
 };
 
@@ -33,7 +32,6 @@ const companies: Company[] = [
     company: "The Leela Palaces, Hotels and Resorts",
     period: "Mar 2026 – Present",
     logo: leelaLogo,
-    accent: "bg-foreground",
     roles: [
       {
         title: "Vice President – Digital & Information Technology",
@@ -47,7 +45,6 @@ const companies: Company[] = [
     company: "Nexus Select Trust",
     period: "2023 – 2026",
     logo: nexusLogo,
-    accent: "bg-foreground",
     summary:
       "Leading enterprise-wide digital transformation and technology strategy across India's largest retail REIT portfolio.",
     roles: [
@@ -64,7 +61,6 @@ const companies: Company[] = [
     period: "2006 – 2022",
     badge: "16+ Years",
     logo: viLogo,
-    accent: "bg-[hsl(0_85%_50%)]",
     summary:
       "Sixteen years of progressive leadership across IT operations, digital transformation, analytics, and large-scale program management — driving enterprise-wide initiatives for one of India's largest telecom operators.",
     roles: [
@@ -109,7 +105,6 @@ const companies: Company[] = [
     company: "Mahajan & Aibara",
     period: "2004 – 2006",
     logo: mahajanLogo,
-    accent: "bg-foreground",
     roles: [
       {
         title: "Senior Consultant",
@@ -123,7 +118,6 @@ const companies: Company[] = [
     company: "GE Power",
     period: "2001 – 2003",
     logo: geLogo,
-    accent: "bg-foreground",
     roles: [
       {
         title: "Analyst – E-Business",
@@ -137,7 +131,6 @@ const companies: Company[] = [
     company: "Mahindra Automotive",
     period: "1999 – 2000",
     logo: mahindraLogo,
-    accent: "bg-foreground",
     roles: [
       {
         title: "Strategic Sourcing Analyst",
@@ -150,132 +143,63 @@ const companies: Company[] = [
 ];
 
 const CompanyCard = ({ company }: { company: Company }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const mvX = useMotionValue(0.5);
-  const mvY = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(mvY, [0, 1], [1.5, -1.5]), { stiffness: 200, damping: 22 });
-  const rotateY = useSpring(useTransform(mvX, [0, 1], [-1.5, 1.5]), { stiffness: 200, damping: 22 });
-  const glowX = useTransform(mvX, (v) => `${v * 100}%`);
-  const glowY = useTransform(mvY, (v) => `${v * 100}%`);
-  const glowBg = useTransform(
-    [glowX, glowY] as any,
-    ([x, y]: any) =>
-      `radial-gradient(500px circle at ${x} ${y}, hsl(var(--foreground) / 0.05), transparent 60%)`
-  );
-
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    mvX.set((e.clientX - rect.left) / rect.width);
-    mvY.set((e.clientY - rect.top) / rect.height);
-  };
-  const handleLeave = () => {
-    mvX.set(0.5);
-    mvY.set(0.5);
-  };
-
   const isMulti = company.roles.length > 1;
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      whileHover={{ y: -3 }}
-      transition={{ type: "spring", stiffness: 250, damping: 22 }}
-      style={{ rotateX, rotateY, transformPerspective: 1000 }}
-      className="exp-card group relative rounded-2xl border border-border bg-card/70 backdrop-blur-sm shadow-sm hover:shadow-xl transition-shadow duration-500 overflow-hidden"
-    >
-      <motion.div
-        aria-hidden
-        style={{ background: glowBg }}
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
-
-      {/* Accent stripe */}
-      <div className={`absolute left-0 top-0 h-full w-1 ${company.accent ?? "bg-foreground"}`} />
-
-      <div className="relative p-6 sm:p-8">
-        {/* Header */}
-        <div className="flex items-start gap-4 sm:gap-5">
+    <article className="exp-card border-b border-border py-8 md:py-11">
+      <div className="grid gap-5 md:grid-cols-[5rem_1fr] md:gap-8">
+        <div>
           {company.logo && (
-            <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center shadow-sm">
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden border border-border bg-background p-1.5">
               <img
                 src={company.logo}
                 alt={`${company.company} logo`}
-                className="w-full h-full object-contain"
+                className="h-full w-full object-contain"
                 loading="lazy"
               />
             </div>
           )}
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-wrap items-center gap-2 mb-1.5">
-              <h3 className="font-serif text-xl md:text-2xl text-foreground leading-tight">
-                {company.company}
-              </h3>
-              {company.badge && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-sans font-semibold tracking-wider uppercase bg-[hsl(0_85%_50%)]/10 text-[hsl(0_70%_42%)] border border-[hsl(0_85%_50%)]/20">
-                  {company.badge}
-                </span>
-              )}
-            </div>
-            <p className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground">
-              {company.period}
-            </p>
-            {company.summary && isMulti && (
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                {company.summary}
-              </p>
-            )}
-          </div>
         </div>
-
-        {/* Roles */}
-        {isMulti ? (
-          <div className="mt-7 relative pl-6 sm:pl-7">
-            {/* Vertical timeline line */}
-            <div className="absolute left-[7px] sm:left-[9px] top-2 bottom-2 w-px bg-border" />
-            <ul className="space-y-6">
-              {company.roles.map((role, i) => (
-                <li key={i} className="relative">
-                  {/* Dot */}
-                  <span className="absolute -left-6 sm:-left-7 top-1.5 flex items-center justify-center">
-                    <span className="block w-3 h-3 rounded-full bg-background border-2 border-[hsl(0_85%_50%)] shadow-[0_0_0_3px_hsl(var(--background))] transition-transform duration-300 group-hover:scale-110" />
-                  </span>
-                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                    <h4 className="font-serif text-base md:text-lg text-foreground">
-                      {role.title}
-                    </h4>
-                    <span className="text-[11px] font-sans tracking-wider text-muted-foreground shrink-0">
-                      {role.period}
-                    </span>
-                  </div>
-                  {role.subCompany && (
-                    <p className="text-xs font-medium text-foreground/60 mt-0.5">
-                      {role.subCompany}
-                    </p>
-                  )}
-                  <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-                    {role.description}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div className="mt-5">
-            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-              <h4 className="font-serif text-base md:text-lg text-foreground">
-                {company.roles[0].title}
-              </h4>
+        <div className="min-w-0">
+          <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-start">
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <h3 className="font-serif text-2xl leading-tight text-foreground md:text-3xl">
+                {company.company}
+                </h3>
+                {company.badge && <span className="border border-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-primary">{company.badge}</span>}
+              </div>
+              <p className="mt-2 text-sm font-medium text-foreground/80">{company.roles[0].title}</p>
             </div>
-            <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-              {company.roles[0].description}
-            </p>
+            <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground sm:text-right">{company.period}</p>
           </div>
-        )}
+          {company.summary && isMulti && <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{company.summary}</p>}
+
+          <details className="group/details mt-5">
+            <summary className="flex cursor-pointer list-none items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <span>{isMulti ? `Explore ${company.roles.length} roles` : "View role details"}</span>
+              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-open/details:rotate-180" aria-hidden="true" />
+            </summary>
+            <div className="relative mt-7 pl-6">
+              <div className="absolute bottom-2 left-[5px] top-2 w-px bg-border" aria-hidden="true" />
+              <ol className="space-y-7">
+                {company.roles.map((role) => (
+                  <li key={`${role.title}-${role.period}`} className="relative">
+                    <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-primary bg-background" aria-hidden="true" />
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                      <h4 className="font-serif text-lg text-foreground md:text-xl">{role.title}</h4>
+                      <span className="shrink-0 text-[11px] tracking-[0.08em] text-muted-foreground">{role.period}</span>
+                    </div>
+                    {role.subCompany && <p className="mt-1 text-xs font-medium text-foreground/70">{role.subCompany}</p>}
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{role.description}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </details>
+        </div>
       </div>
-    </motion.div>
+    </article>
   );
 };
 
@@ -285,30 +209,27 @@ const ExperienceSection = () => {
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.from(".exp-card", {
-        opacity: 0,
-        y: 40,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".exp-list", start: "top 80%" },
+      gsap.fromTo(".exp-card", { opacity: 0, y: 28 }, {
+        opacity: 1, y: 0, duration: 0.75, stagger: 0.1, ease: "power3.out",
+        scrollTrigger: { trigger: ".exp-list", start: "top 82%", once: true },
       });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section id="experience" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
+    <section id="experience" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-16">
-          <div className="md:col-span-4">
-            <p className="section-label">Career</p>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <header className="lg:col-span-4">
+            <p className="section-label">02 / Career</p>
             <h2 className="section-title">Experience</h2>
-          </div>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">A career progressing from operational rigor to enterprise technology leadership across global organizations.</p>
+          </header>
 
-          <div className="md:col-span-8 exp-list space-y-6">
-            {companies.map((c, i) => (
-              <CompanyCard key={i} company={c} />
+          <div className="exp-list border-t border-border lg:col-span-8">
+            {companies.map((company) => (
+              <CompanyCard key={company.company} company={company} />
             ))}
           </div>
         </div>
