@@ -1,198 +1,89 @@
-import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useReducedMotion } from "framer-motion";
 import headshot from "@/assets/headshot.jpg";
 
-gsap.registerPlugin(ScrollTrigger);
+const statistics = [
+  { value: "22+", label: "Years in technology leadership" },
+  { value: "400M+", label: "Customers impacted at scale" },
+  { value: "Global", label: "Multi-market delivery experience" },
+];
 
 const HeroSection = () => {
-  const comboRef = useRef<HTMLDivElement>(null);
-  const photoGlowRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!comboRef.current) return;
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: comboRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
-
-      if (photoGlowRef.current) {
-        tl.fromTo(
-          photoGlowRef.current,
-          { opacity: 0, filter: "blur(4px)", scale: 0.95 },
-          {
-            opacity: 1,
-            filter: "blur(28px)",
-            scale: 1.08,
-            duration: 1.2,
-            ease: "power2.out",
-          }
-        ).to(photoGlowRef.current, {
-          opacity: 0.8,
-          filter: "blur(12px)",
-          scale: 1,
-          duration: 1.1,
-          ease: "power2.inOut",
-        });
-      }
-
-      if (statsRef.current) {
-        const items = statsRef.current.querySelectorAll<HTMLElement>("[data-stat]");
-        tl.fromTo(
-          items,
-          { opacity: 0, y: 14, filter: "drop-shadow(0 0 0 rgba(0,0,0,0))" },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "drop-shadow(0 0 18px rgba(255,255,255,0.35))",
-            duration: 0.7,
-            stagger: 0.12,
-            ease: "power2.out",
-          },
-          "-=1.4"
-        ).to(items, {
-          filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
-          duration: 1.2,
-          ease: "power2.inOut",
-        });
-      }
-    }, comboRef);
-
-    return () => ctx.revert();
-  }, []);
+  const reduceMotion = useReducedMotion();
+  const reveal = (delay: number) => ({
+    initial: reduceMotion ? false : { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] as const },
+  });
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <div className="section-container py-24 sm:py-28 md:py-32">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-center">
-          {/* Photo - left */}
-          <div ref={comboRef} className="md:col-span-5 group/combo flex flex-col items-center md:items-start gap-8 w-full [perspective:1200px]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
-              className="transition-transform duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(6deg)_rotateY(-6deg)_translateY(-0.5rem)]"
-            >
-              <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80">
-                <div ref={photoGlowRef} className="absolute -inset-2 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)] opacity-80 blur-md transition-all duration-700 group-hover/combo:opacity-100 group-hover/combo:blur-xl group-hover/combo:-inset-3" />
-                <div className="absolute -inset-0.5 rounded-2xl bg-[conic-gradient(from_140deg,#ef4444,#f59e0b,#10b981,#3b82f6,#8b5cf6,#ef4444)]" />
-                <div className="relative w-full h-full rounded-2xl overflow-hidden bg-background">
-                  <img
-                    src={headshot}
-                    alt="Omesh Bhujbal"
-                    width={320}
-                    height={320}
-                    fetchPriority="high"
-                    decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover/combo:scale-105"
-                  />
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              ref={statsRef}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.6 }}
-              className="flex flex-wrap gap-6 sm:gap-8 md:gap-10 justify-center md:justify-start transition-all duration-700 ease-out will-change-transform group-hover/combo:[transform:rotateX(4deg)_rotateY(-4deg)_translateY(-0.25rem)] group-hover/combo:drop-shadow-[0_10px_25px_hsl(var(--foreground)/0.18)]"
-            >
-              {[
-                { value: "22+", label: "Years" },
-                { value: "400M+", label: "Users Impacted" },
-                { value: "Global", label: "Delivery" },
-              ].map((s) => (
-                <div key={s.label} data-stat>
-                  <p className="font-serif text-2xl md:text-3xl text-foreground">{s.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">{s.label}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-
-
-
-          {/* Text - right */}
-          <div className="md:col-span-7 text-center md:text-left">
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="section-label mb-6"
-            >
-              Vice President – Digital & Information Technology
+    <section className="relative min-h-[92vh] border-b border-border pt-24 sm:pt-28 lg:pt-32">
+      <div className="section-container flex min-h-[calc(92vh-6rem)] flex-col justify-between pb-10 sm:pb-14">
+        <div className="grid flex-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="order-2 lg:order-1 lg:col-span-7 lg:pr-6">
+            <motion.p {...reveal(0.1)} className="section-label mb-7">
+              Vice President – Digital &amp; Information Technology
             </motion.p>
-
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="font-serif text-[2.75rem] sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-foreground leading-[0.95] mb-8 break-words"
+              {...reveal(0.2)}
+              className="max-w-4xl font-serif text-[3.5rem] font-normal leading-[0.88] text-foreground sm:text-7xl md:text-8xl lg:text-[7.25rem]"
             >
-              <span aria-hidden="true">Omesh<br />Bhujbal</span>
-              <span className="sr-only">Omesh Bhujbal — Vice President – Digital & Information Technology & Digital Transformation Leader</span>
+              Omesh<br />Bhujbal
             </motion.h1>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.6 }}
-              className="flex justify-center md:justify-start mb-8"
-            >
-              <div className="divider" />
-            </motion.div>
-
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-              className="text-base md:text-lg text-muted-foreground max-w-lg mx-auto md:mx-0 leading-relaxed mb-10 font-light"
+              {...reveal(0.35)}
+              className="mt-8 max-w-2xl font-serif text-3xl leading-[1.05] text-foreground sm:text-4xl lg:text-5xl"
             >
-              22+ years driving digital transformation across telecom, retail, and manufacturing with enterprise-scale innovation.
+              Building technology ecosystems that scale.
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5, duration: 0.6 }}
-              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4"
+            <motion.p
+              {...reveal(0.45)}
+              className="mt-7 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg"
             >
-              <a href="#experience" className="btn-primary">
-                View Experience
-              </a>
-              <a
-                href="https://www.linkedin.com/in/omeshb/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary"
-              >
-                LinkedIn
+              Technology executive shaping digital transformation, AI, data, and enterprise platforms across hospitality, retail, telecom, and manufacturing.
+            </motion.p>
+            <motion.div {...reveal(0.55)} className="mt-9 flex flex-wrap gap-4">
+              <a href="#experience" className="btn-primary">View experience</a>
+              <a href="https://www.linkedin.com/in/omeshb/" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                LinkedIn ↗
               </a>
             </motion.div>
           </div>
-        </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
+          <motion.figure
+            {...reveal(0.25)}
+            className="order-1 ml-auto w-[78%] max-w-sm lg:order-2 lg:col-span-5 lg:w-full lg:max-w-md"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden bg-card">
+              <img
+                src={headshot}
+                alt="Omesh Bhujbal, technology executive"
+                width={640}
+                height={800}
+                fetchPriority="high"
+                decoding="async"
+                className="h-full w-full object-cover object-top"
+              />
+            </div>
+            <figcaption className="mt-3 flex items-center justify-between border-t border-border pt-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <span>Technology leadership</span>
+              <span>Mumbai, India</span>
+            </figcaption>
+          </motion.figure>
+        </div>
+
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-px h-10 bg-foreground/20"
-        />
-      </motion.div>
+          {...reveal(0.7)}
+          className="mt-12 grid border-y border-border sm:grid-cols-3 lg:mt-16"
+          aria-label="Career statistics"
+        >
+          {statistics.map((stat, index) => (
+            <div key={stat.label} className={`py-5 sm:px-7 sm:py-6 ${index > 0 ? "border-t border-border sm:border-l sm:border-t-0" : ""}`}>
+              <p className="font-serif text-3xl text-primary md:text-4xl">{stat.value}</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 };
