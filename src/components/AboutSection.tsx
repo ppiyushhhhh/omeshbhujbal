@@ -1,14 +1,16 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotionPreference();
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.from(".about-reveal", {
         opacity: 0, y: 40, duration: 0.8, stagger: 0.15, ease: "power3.out",
@@ -16,7 +18,7 @@ const AboutSection = () => {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section id="about" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">

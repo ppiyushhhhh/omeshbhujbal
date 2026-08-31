@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ConnectSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotionPreference();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<keyof FormData, boolean>>({
@@ -46,7 +48,7 @@ const ConnectSection = () => {
   const [statusMessage, setStatusMessage] = useState("");
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.from(".connect-reveal", {
         opacity: 0,
@@ -58,7 +60,7 @@ const ConnectSection = () => {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   const validateField = (field: keyof FormData, value: string): string | undefined => {
     switch (field) {

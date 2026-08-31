@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 import syracuseLogo from "@/assets/logos/syracuse.jfif";
 import puneLogo from "@/assets/logos/pune.jfif";
 
@@ -23,9 +24,10 @@ const education = [
 
 const EducationSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotionPreference();
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".edu-item",
@@ -41,7 +43,7 @@ const EducationSection = () => {
       );
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section id="education" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32 bg-card">
