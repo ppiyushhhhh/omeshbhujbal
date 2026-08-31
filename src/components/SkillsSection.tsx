@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,9 +34,10 @@ const domains = [
 
 const SkillsSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotionPreference();
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(".domain-row", { opacity: 0, y: 22 }, {
         opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out",
@@ -43,7 +45,7 @@ const SkillsSection = () => {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section id="skills" ref={sectionRef} className="bg-card py-20 sm:py-24 md:py-32 lg:py-36">

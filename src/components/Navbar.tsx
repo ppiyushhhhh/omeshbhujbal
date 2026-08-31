@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 
 const navItems = [
   { label: "About", href: "#about", id: "about" },
@@ -13,6 +14,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
+  const reducedMotion = useReducedMotionPreference();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -93,9 +95,9 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -20 }}
+      initial={reducedMotion ? false : { opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
+      transition={reducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.2 }}
       aria-label="Primary"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
           scrolled
@@ -167,10 +169,10 @@ const Navbar = () => {
       {mobileOpen && (
         <motion.div
           id="mobile-nav"
-          initial={{ opacity: 0, height: 0 }}
+          initial={reducedMotion ? false : { opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }}
           className="md:hidden overflow-hidden bg-background/95 backdrop-blur-lg border-t border-border/50"
         >
           <div className="section-container py-6 flex flex-col gap-4">

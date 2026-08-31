@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronDown } from "lucide-react";
+import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 import leelaLogo from "@/assets/logos/the-leela.jfif";
 import nexusLogo from "@/assets/logos/nexus.jfif";
 import viLogo from "@/assets/logos/vi.jfif";
@@ -205,9 +206,10 @@ const CompanyCard = ({ company }: { company: Company }) => {
 
 const ExperienceSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotionPreference();
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(".exp-card", { opacity: 0, y: 28 }, {
         opacity: 1, y: 0, duration: 0.75, stagger: 0.1, ease: "power3.out",
@@ -215,7 +217,7 @@ const ExperienceSection = () => {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <section id="experience" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">
