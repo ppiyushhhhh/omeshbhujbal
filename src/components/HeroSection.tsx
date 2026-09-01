@@ -25,7 +25,7 @@ const HeroSection = () => {
             </motion.p>
             <motion.h1
               {...reveal(0.2)}
-              className="max-w-4xl font-serif text-[3.5rem] font-normal leading-[0.88] text-foreground sm:text-7xl md:text-8xl lg:text-[7.25rem]"
+              className="max-w-4xl break-words font-serif text-5xl font-normal leading-[0.9] text-foreground min-[360px]:text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.25rem]"
             >
               Omesh<br />Bhujbal
             </motion.h1>
