@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -149,19 +150,26 @@ const ConnectSection = () => {
   };
 
   return (
-    <section id="connect" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32">
+    <section id="connect" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <div className="connect-reveal text-center max-w-2xl mx-auto mb-12 md:mb-16">
-          <p className="section-label">Connect</p>
-          <h2 className="section-title mb-6">Let's Connect</h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Have a question, opportunity, or project in mind? Send me a message and I'll get back to
-            you as soon as possible.
-          </p>
-        </div>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <header className="connect-reveal lg:col-span-4">
+            <p className="section-label">07 / Connect</p>
+            <h2 className="section-title">Let's connect.</h2>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground md:text-base">
+              Have a question, opportunity, or transformation agenda in mind? Send a message and I'll get back to you as soon as possible.
+            </p>
+            <a
+              href="https://www.linkedin.com/in/omeshb/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary mt-8"
+            >
+              Connect on LinkedIn →
+            </a>
+          </header>
 
-        <div className="connect-reveal max-w-3xl mx-auto">
-          <div className="subtle-card">
+          <div className="connect-reveal border-t border-border pt-8 lg:col-span-8 lg:pt-10">
             <form onSubmit={handleSubmit} noValidate className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -178,7 +186,7 @@ const ConnectSection = () => {
                     aria-invalid={!!errors.name}
                     aria-describedby={errors.name ? "name-error" : undefined}
                     autoComplete="name"
-                    className="h-12 rounded-lg bg-background"
+                    className="h-12 rounded-none border-x-0 border-t-0 bg-transparent px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                   {errors.name && (
                     <p id="name-error" className="text-sm text-destructive">
@@ -201,7 +209,7 @@ const ConnectSection = () => {
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? "email-error" : undefined}
                     autoComplete="email"
-                    className="h-12 rounded-lg bg-background"
+                    className="h-12 rounded-none border-x-0 border-t-0 bg-transparent px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                   {errors.email && (
                     <p id="email-error" className="text-sm text-destructive">
@@ -224,7 +232,7 @@ const ConnectSection = () => {
                   disabled={isSubmitting}
                   aria-invalid={!!errors.subject}
                   aria-describedby={errors.subject ? "subject-error" : undefined}
-                  className="h-12 rounded-lg bg-background"
+                  className="h-12 rounded-none border-x-0 border-t-0 bg-transparent px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 {errors.subject && (
                   <p id="subject-error" className="text-sm text-destructive">
@@ -246,7 +254,7 @@ const ConnectSection = () => {
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? "message-error" : undefined}
                   rows={5}
-                  className="min-h-[140px] resize-y rounded-lg bg-background"
+                  className="min-h-[140px] resize-y rounded-none border-x-0 border-t-0 bg-transparent px-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 {errors.message && (
                   <p id="message-error" className="text-sm text-destructive">
@@ -256,10 +264,10 @@ const ConnectSection = () => {
               </div>
 
               <div className="pt-2">
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary w-full md:w-auto disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="btn-primary h-auto w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <>
@@ -269,42 +277,23 @@ const ConnectSection = () => {
                   ) : (
                     "Send Message"
                   )}
-                </button>
+                </Button>
               </div>
 
               {status === "success" && (
-                <div className="p-4 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm">
+                <div className="border border-primary/20 bg-primary/10 p-4 text-sm text-primary">
                   <p className="font-semibold mb-1">Message Sent Successfully</p>
                   <p>{statusMessage}</p>
                 </div>
               )}
 
               {status === "error" && (
-                <div className="p-4 rounded-lg bg-destructive/10 text-destructive border border-destructive/20 text-sm">
+                <div className="border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
                   {statusMessage}
                 </div>
               )}
             </form>
           </div>
-        </div>
-
-        <div className="connect-reveal text-center max-w-2xl mx-auto mt-12 md:mt-16">
-          <a
-            href="https://www.linkedin.com/in/omeshb/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-          >
-            Connect on LinkedIn →
-          </a>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="section-container mt-24 pt-8 border-t border-border">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground tracking-wider uppercase">
-          <p>© {new Date().getFullYear()} Omesh Bhujbal</p>
-          <p>Mumbai, India</p>
         </div>
       </div>
     </section>

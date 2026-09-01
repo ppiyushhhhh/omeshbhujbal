@@ -139,7 +139,7 @@ const AwardsSection = () => {
             if (event.target === event.currentTarget) setSelectedImage(null);
           }}
         >
-          <div className="relative flex max-h-full w-full max-w-6xl flex-col">
+          <div className="relative flex max-h-full w-full max-w-6xl flex-col overflow-hidden">
             <div className="mb-4 flex items-start justify-between gap-6 text-background">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/70">Recognition</p>
@@ -161,7 +161,7 @@ const AwardsSection = () => {
             <img
               src={selectedImage.src}
               alt={selectedImage.alt}
-              className="max-h-[calc(100vh-12rem)] w-full object-contain"
+                className="max-h-[calc(100dvh-10rem)] w-full object-contain sm:max-h-[calc(100dvh-12rem)]"
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotionPreference } from "@/hooks/use-reduced-motion-preference";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "About", href: "#about", id: "about" },
@@ -35,7 +36,8 @@ const Navbar = () => {
     const computeActive = () => {
       const sections = getSections();
       if (sections.length === 0) return;
-      const offset = 100; // header + a little breathing room
+      const navHeight = document.querySelector("nav")?.getBoundingClientRect().height ?? 64;
+      const offset = navHeight + 24;
       const scrollY = window.scrollY;
 
       // If near bottom of page, activate last section
@@ -87,7 +89,7 @@ const Navbar = () => {
     if (!el) return;
     e.preventDefault();
     setMobileOpen(false);
-    const headerOffset = 80;
+    const headerOffset = document.querySelector("nav")?.getBoundingClientRect().height ?? 64;
     const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
     window.scrollTo({ top, behavior: "smooth" });
     history.replaceState(null, "", `#${id}`);
@@ -153,17 +155,20 @@ const Navbar = () => {
           </a>
         </div>
 
-        <button
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav"
-          className="md:hidden flex flex-col gap-1.5 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          className="flex flex-col gap-1.5 rounded-sm md:hidden"
         >
           <span className={`w-5 h-px bg-foreground transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-1" : ""}`} />
           <span className={`w-5 h-px bg-foreground transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
           <span className={`w-5 h-px bg-foreground transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-1" : ""}`} />
-        </button>
+        </Button>
       </div>
 
       {mobileOpen && (
@@ -173,7 +178,7 @@ const Navbar = () => {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }}
-          className="md:hidden overflow-hidden bg-background/95 backdrop-blur-lg border-t border-border/50"
+          className="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-border/50 bg-background/95 backdrop-blur-lg md:hidden"
         >
           <div className="section-container py-6 flex flex-col gap-4">
             {navItems.map((item) => {

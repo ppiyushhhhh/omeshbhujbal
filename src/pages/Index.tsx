@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import SiteFooter from "@/components/SiteFooter";
 
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const ExperienceSection = lazy(() => import("@/components/ExperienceSection"));
@@ -26,6 +27,7 @@ const Index = () => {
           <ConnectSection />
         </Suspense>
       </main>
+      <SiteFooter />
     </div>
   );
 };

@@ -45,7 +45,7 @@ const AchievementsSection = () => {
             {achievements.map((item, index) => (
               <article key={item.title} className="impact-row grid gap-5 border-b border-border py-8 sm:grid-cols-[0.8fr_1.2fr] md:py-10">
                 <div>
-                  <p className="font-display text-6xl leading-none text-primary sm:text-7xl md:text-8xl">{item.metric}</p>
+                  <p className="break-words font-display text-5xl leading-none text-primary min-[360px]:text-6xl sm:text-7xl md:text-8xl">{item.metric}</p>
                   <h3 className="mt-3 font-sans text-xs font-semibold uppercase tracking-[0.16em] text-foreground">{item.title}</h3>
                 </div>
                 <div className="sm:pt-2">

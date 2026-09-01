@@ -46,36 +46,37 @@ const EducationSection = () => {
   }, [reducedMotion]);
 
   return (
-    <section id="education" ref={sectionRef} className="py-16 sm:py-20 md:py-28 lg:py-32 bg-card">
+    <section id="education" ref={sectionRef} className="bg-card py-20 sm:py-24 md:py-32 lg:py-36">
       <div className="section-container">
-        <div className="grid md:grid-cols-12 gap-12 md:gap-16">
-          <div className="md:col-span-4">
-            <p className="section-label">Background</p>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <header className="lg:col-span-4">
+            <p className="section-label">06 / Background</p>
             <h2 className="section-title">Education</h2>
-          </div>
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">Formal foundations in information management and engineering that continue to shape a systems-led leadership practice.</p>
+          </header>
 
-          <div className="md:col-span-8 edu-list">
+          <div className="edu-list border-t border-border lg:col-span-8">
             {education.map((edu) => (
-              <div
+              <article
                 key={edu.degree}
-                className="edu-item group relative py-6 border-b border-border last:border-0 flex items-start gap-4 sm:gap-5 px-4 -mx-4 rounded-xl transition-all duration-300 ease-out hover:bg-background hover:shadow-lg hover:-translate-y-1 hover:border-transparent cursor-default"
+                className="edu-item grid gap-5 border-b border-border py-8 sm:grid-cols-[5rem_1fr] sm:gap-8 md:py-10"
               >
-                <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-background border border-border flex items-center justify-center shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:rotate-[-3deg]">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border border-border bg-background p-1.5">
                   <img
                     src={edu.logo}
                     alt={`${edu.school} logo`}
-                    className="w-full h-full object-contain p-1.5"
+                    className="h-full w-full object-contain"
                     loading="lazy"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
-                    <h3 className="font-serif text-lg text-foreground transition-colors duration-300 group-hover:text-[hsl(0_85%_50%)]">{edu.degree}</h3>
-                    <span className="text-xs text-muted-foreground tracking-wider">{edu.period}</span>
+                <div className="min-w-0">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="font-serif text-2xl leading-tight text-foreground md:text-3xl">{edu.degree}</h3>
+                    <span className="shrink-0 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{edu.period}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{edu.school}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{edu.school}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
