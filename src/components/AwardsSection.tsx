@@ -58,57 +58,59 @@ const AwardsSection = () => {
 
   return (
     <>
-      <section id="awards" ref={sectionRef} className="overflow-hidden py-24 sm:py-28 md:py-32 lg:py-40">
+      <section id="awards" ref={sectionRef} className="relative overflow-hidden py-20 sm:py-24 md:py-28 lg:py-36">
+        <span aria-hidden="true" className="pointer-events-none absolute -right-4 top-12 hidden select-none font-serif text-[17rem] leading-none text-foreground/[0.025] xl:block">
+          24
+        </span>
+
         <div className="section-container relative">
-          <article className="grid grid-cols-1 gap-y-12 md:grid-cols-12 md:gap-x-8 md:gap-y-0 lg:gap-x-12 xl:gap-x-16">
-            <div className="recognition-reveal order-1 md:col-span-5 md:col-start-1 md:row-start-1 md:flex md:min-h-[34rem] md:flex-col md:justify-center lg:min-h-[40rem]">
-              <p className="mb-12 text-[10px] font-semibold uppercase tracking-[0.28em] text-primary sm:mb-14 md:mb-20">
+          <article className="grid gap-12 md:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] md:items-center md:gap-x-10 md:gap-y-0 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:gap-x-16">
+            <div className="recognition-reveal relative z-10 md:col-start-1 md:row-start-1 md:self-end md:pt-10 lg:pt-16">
+              <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.24em] text-primary sm:mb-12">
                 04 / Recognition
               </p>
 
-              <h2 className="font-serif text-[5.75rem] leading-[0.72] text-foreground min-[360px]:text-[6.35rem] sm:text-[8.5rem] md:text-[6.75rem] lg:text-[8.75rem] xl:text-[10.25rem]">
+              <h2 className="font-serif text-[5.25rem] leading-[0.75] text-foreground sm:text-8xl md:text-[5.25rem] lg:text-[7rem] xl:text-[8rem]">
                 CIO100
               </h2>
-              <div className="mt-8 flex items-baseline gap-x-5 sm:mt-10 sm:gap-x-7 md:block">
-                <p className="font-serif text-4xl leading-none text-foreground sm:text-5xl lg:text-6xl">Award</p>
-                <p className="font-serif text-4xl leading-none text-primary sm:text-5xl md:mt-3 lg:text-6xl">2024</p>
-              </div>
+              <p className="mt-6 font-serif text-4xl leading-none text-foreground sm:text-5xl lg:text-6xl">Award</p>
+              <p className="mt-2 font-serif text-4xl leading-none text-primary sm:text-5xl lg:text-6xl">2024</p>
             </div>
 
-            <div className="recognition-reveal order-3 max-w-md pt-2 md:col-span-4 md:col-start-1 md:row-start-2 md:pt-14 lg:pt-20">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground">Honoree</p>
-              <p className="mt-4 text-[10px] uppercase leading-[1.7] tracking-[0.19em] text-muted-foreground">
-                19th CIO100 Awards &amp; Symposium
-              </p>
-              <p className="mt-2 text-[10px] uppercase leading-[1.7] tracking-[0.15em] text-muted-foreground">
-                Presented by IDC / CIO100 Awards &amp; Symposium
-              </p>
-              <p className="mt-8 max-w-sm text-sm leading-7 text-muted-foreground sm:text-base">
-                Recognized for technology leadership and enterprise transformation.
-              </p>
+            <div className="recognition-reveal order-3 max-w-sm md:order-none md:col-start-1 md:row-start-2 md:self-start md:pb-10 md:pt-12 lg:pb-16 lg:pt-16">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground">Honoree</p>
+                <p className="mt-3 text-[10px] uppercase leading-relaxed tracking-[0.17em] text-muted-foreground">
+                  19th CIO100 Awards &amp; Symposium
+                </p>
+                <p className="mt-3 text-xs uppercase leading-relaxed tracking-[0.12em] text-muted-foreground">
+                  Presented by IDC / CIO100 Awards &amp; Symposium
+                </p>
+                <p className="mt-7 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Recognized for technology leadership and enterprise transformation.
+                </p>
             </div>
 
-            <div className="contents md:relative md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 md:block md:pb-24 lg:pb-32">
-              <figure className="recognition-reveal order-2 md:mt-10 lg:mt-0">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  aria-label={`Enlarge ${awardTitle} photograph`}
-                  onClick={() => openLightbox({
-                    src: plaquePhoto,
-                    alt: "Omesh Bhujbal receiving the CIO100 Award 2024 on stage",
-                    title: awardTitle,
-                    date: awardDate,
-                  })}
-                  className="h-auto w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  <span className="block aspect-[4/3] w-full overflow-hidden bg-card sm:aspect-[3/2] md:aspect-[4/5] lg:aspect-[5/6] xl:aspect-[4/5]">
-                    <img src={plaquePhoto} alt="Omesh Bhujbal receiving the CIO100 Award 2024 on stage" loading="lazy" decoding="async" className="h-full w-full object-cover object-[55%_center]" />
+            <div className="contents md:relative md:col-start-2 md:row-span-2 md:row-start-1 md:block md:pb-20 lg:pb-24">
+              <figure className="recognition-reveal order-2 md:order-none">
+              <Button
+                type="button"
+                variant="ghost"
+                aria-label={`Enlarge ${awardTitle} photograph`}
+                onClick={() => openLightbox({
+                  src: plaquePhoto,
+                  alt: "Omesh Bhujbal receiving the CIO100 Award 2024 on stage",
+                  title: awardTitle,
+                  date: awardDate,
+                })}
+                  className="group h-auto w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                  <span className="block aspect-[4/5] w-full overflow-hidden bg-card sm:aspect-[5/6] md:min-h-[38rem] lg:min-h-[44rem]">
+                    <img src={plaquePhoto} alt="Omesh Bhujbal receiving the CIO100 Award 2024 on stage" loading="lazy" decoding="async" className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none" />
                   </span>
                 </Button>
               </figure>
 
-              <figure className="recognition-reveal order-4 ml-auto w-[88%] sm:w-[72%] md:absolute md:bottom-0 md:-left-10 md:w-[52%] lg:-left-16 lg:w-[48%] xl:-left-20 xl:w-[46%]">
+              <figure className="recognition-reveal order-4 ml-1 w-[78%] md:absolute md:-bottom-1 md:-left-8 md:ml-0 md:w-[46%] lg:-left-12 lg:w-[43%]">
                 <Button
                   type="button"
                   variant="ghost"
@@ -119,10 +121,10 @@ const AwardsSection = () => {
                     title: awardTitle,
                     date: awardDate,
                   })}
-                  className="h-auto w-full cursor-zoom-in rounded-none border border-background bg-background p-1 shadow-sm hover:bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="group h-auto w-full cursor-zoom-in rounded-none border border-background bg-background p-1 shadow-sm hover:bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <span className="block aspect-[3/2] w-full overflow-hidden bg-card">
-                    <img src={stagePhoto} alt="CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                  <span className="block aspect-[4/3] w-full overflow-hidden bg-card">
+                    <img src={stagePhoto} alt="CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none" />
                   </span>
                 </Button>
               </figure>
