@@ -58,21 +58,40 @@ const AwardsSection = () => {
 
   return (
     <>
-      <section id="awards" ref={sectionRef} className="py-20 sm:py-24 md:py-32 lg:py-36">
-      <div className="section-container">
-        <header className="recognition-reveal grid gap-6 border-b border-border pb-9 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-4">
-            <p className="section-label">04 / Recognition</p>
-            <h2 className="section-title">Leadership, recognized.</h2>
-          </div>
-          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground lg:col-span-6 lg:col-start-7 md:text-base">
-            Celebrating technology leadership that turns ambitious enterprise strategy into sustained, organization-wide progress.
-          </p>
-        </header>
+      <section id="awards" ref={sectionRef} className="relative overflow-hidden py-20 sm:py-24 md:py-28 lg:py-36">
+        <span aria-hidden="true" className="pointer-events-none absolute -right-4 top-12 hidden select-none font-serif text-[17rem] leading-none text-foreground/[0.025] xl:block">
+          24
+        </span>
 
-        <article className="mt-12 md:mt-16">
-          <div className="recognition-reveal grid gap-4 md:grid-cols-12">
-            <figure className="md:col-span-8">
+        <div className="section-container relative">
+          <article className="grid gap-12 md:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] md:items-center md:gap-10 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:gap-16">
+            <div className="recognition-reveal relative z-10 md:py-10 lg:py-16">
+              <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.24em] text-primary sm:mb-12">
+                04 / Recognition
+              </p>
+
+              <h2 className="font-serif text-[5.25rem] leading-[0.75] text-foreground sm:text-8xl md:text-[5.25rem] lg:text-[7rem] xl:text-[8rem]">
+                CIO100
+              </h2>
+              <p className="mt-6 font-serif text-4xl leading-none text-foreground sm:text-5xl lg:text-6xl">Award</p>
+              <p className="mt-2 font-serif text-4xl leading-none text-primary sm:text-5xl lg:text-6xl">2024</p>
+
+              <div className="mt-12 max-w-sm sm:mt-16">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground">Honoree</p>
+                <p className="mt-3 text-[10px] uppercase leading-relaxed tracking-[0.17em] text-muted-foreground">
+                  19th CIO100 Awards &amp; Symposium
+                </p>
+                <p className="mt-3 text-xs uppercase leading-relaxed tracking-[0.12em] text-muted-foreground">
+                  Presented by IDC / CIO100 Awards &amp; Symposium
+                </p>
+                <p className="mt-7 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  Recognized for technology leadership and enterprise transformation.
+                </p>
+              </div>
+            </div>
+
+            <div className="recognition-reveal relative md:pb-20 lg:pb-24">
+              <figure>
               <Button
                 type="button"
                 variant="ghost"
@@ -83,50 +102,35 @@ const AwardsSection = () => {
                   title: awardTitle,
                   date: awardDate,
                 })}
-                className="group h-auto w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="group h-auto w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <span className="block aspect-[4/3] w-full overflow-hidden bg-card md:aspect-[16/10]">
-                  <img src={plaquePhoto} alt="Omesh Bhujbal receiving the CIO100 Award 2024 on stage" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transform-none" />
-                </span>
-              </Button>
-            </figure>
-            <figure className="md:col-span-4 md:self-end">
-              <Button
-                type="button"
-                variant="ghost"
-                aria-label={`Enlarge ${awardTitle} stage photograph`}
-                onClick={() => openLightbox({
-                  src: stagePhoto,
-                  alt: "CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree",
-                  title: awardTitle,
-                  date: awardDate,
-                })}
-                className="group h-auto w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                <span className="block aspect-[4/3] w-full overflow-hidden bg-card">
-                  <img src={stagePhoto} alt="CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transform-none" />
-                </span>
-              </Button>
-              <figcaption className="mt-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">19th CIO100 Awards &amp; Symposium</figcaption>
-            </figure>
-          </div>
+                  <span className="block aspect-[4/5] w-full overflow-hidden bg-card sm:aspect-[5/6] md:min-h-[38rem] lg:min-h-[44rem]">
+                    <img src={plaquePhoto} alt="Omesh Bhujbal receiving the CIO100 Award 2024 on stage" loading="lazy" decoding="async" className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none" />
+                  </span>
+                </Button>
+              </figure>
 
-          <div className="recognition-reveal mt-10 grid gap-8 md:mt-14 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
-              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
-                <span>2024</span><span className="h-px w-8 bg-primary" /><span>Honoree</span>
-              </div>
-              <h3 className="mt-5 font-serif text-4xl leading-[1.02] text-foreground sm:text-5xl">CIO100 Award — 2024</h3>
-              <p className="mt-5 text-xs uppercase tracking-[0.14em] text-muted-foreground">Presented by IDG Inc. · IDC Jury · Nexus Select Malls</p>
+              <figure className="mt-8 w-[78%] md:absolute md:-bottom-1 md:-left-8 md:mt-0 md:w-[46%] lg:-left-12 lg:w-[43%]">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  aria-label={`Enlarge ${awardTitle} stage photograph`}
+                  onClick={() => openLightbox({
+                    src: stagePhoto,
+                    alt: "CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree",
+                    title: awardTitle,
+                    date: awardDate,
+                  })}
+                  className="group h-auto w-full cursor-zoom-in rounded-none border border-background bg-background p-1 shadow-sm hover:bg-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  <span className="block aspect-[4/3] w-full overflow-hidden bg-card">
+                    <img src={stagePhoto} alt="CIO100 Awards stage announcing Omesh Bhujbal as a Progressive 100 Honoree" loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none" />
+                  </span>
+                </Button>
+              </figure>
             </div>
-            <div className="space-y-5 text-[15px] leading-relaxed text-muted-foreground lg:col-span-6 lg:col-start-7 md:text-base">
-              <p>Honored to receive the prestigious CIO100 Award — 2024 at the 19th edition of the CIO100 Awards and Symposium by IDG Inc.</p>
-              <p>Grateful to be recognized among such esteemed industry leaders. This award is a testament to the relentless dedication and support of my amazing team at Nexus Select Malls and the trust from our management.</p>
-              <p>A big thank you to the IDC jury for this recognition and for organizing such a remarkable event. It was an inspiring experience connecting with fellow winners and professionals from across the industry — seeing how organizations are leveraging IT to achieve success.</p>
-            </div>
-          </div>
-        </article>
-      </div>
+          </article>
+        </div>
       </section>
 
       {selectedImage && (
