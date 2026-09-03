@@ -64,8 +64,8 @@ const AwardsSection = () => {
         </span>
 
         <div className="section-container relative">
-          <article className="grid gap-12 md:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] md:items-center md:gap-10 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:gap-16">
-            <div className="recognition-reveal relative z-10 md:py-10 lg:py-16">
+          <article className="grid gap-12 md:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] md:items-center md:gap-x-10 md:gap-y-0 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] lg:gap-x-16">
+            <div className="recognition-reveal relative z-10 md:col-start-1 md:row-start-1 md:self-end md:pt-10 lg:pt-16">
               <p className="mb-10 text-[10px] font-semibold uppercase tracking-[0.24em] text-primary sm:mb-12">
                 04 / Recognition
               </p>
@@ -75,8 +75,9 @@ const AwardsSection = () => {
               </h2>
               <p className="mt-6 font-serif text-4xl leading-none text-foreground sm:text-5xl lg:text-6xl">Award</p>
               <p className="mt-2 font-serif text-4xl leading-none text-primary sm:text-5xl lg:text-6xl">2024</p>
+            </div>
 
-              <div className="mt-12 max-w-sm sm:mt-16">
+            <div className="recognition-reveal order-3 max-w-sm md:order-none md:col-start-1 md:row-start-2 md:self-start md:pb-10 md:pt-12 lg:pb-16 lg:pt-16">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground">Honoree</p>
                 <p className="mt-3 text-[10px] uppercase leading-relaxed tracking-[0.17em] text-muted-foreground">
                   19th CIO100 Awards &amp; Symposium
@@ -87,11 +88,10 @@ const AwardsSection = () => {
                 <p className="mt-7 text-sm leading-relaxed text-muted-foreground sm:text-base">
                   Recognized for technology leadership and enterprise transformation.
                 </p>
-              </div>
             </div>
 
-            <div className="recognition-reveal relative md:pb-20 lg:pb-24">
-              <figure>
+            <div className="contents md:relative md:col-start-2 md:row-span-2 md:row-start-1 md:block md:pb-20 lg:pb-24">
+              <figure className="recognition-reveal order-2 md:order-none">
               <Button
                 type="button"
                 variant="ghost"
@@ -110,7 +110,7 @@ const AwardsSection = () => {
                 </Button>
               </figure>
 
-              <figure className="mt-8 w-[78%] md:absolute md:-bottom-1 md:-left-8 md:mt-0 md:w-[46%] lg:-left-12 lg:w-[43%]">
+              <figure className="recognition-reveal order-4 ml-1 w-[78%] md:absolute md:-bottom-1 md:-left-8 md:ml-0 md:w-[46%] lg:-left-12 lg:w-[43%]">
                 <Button
                   type="button"
                   variant="ghost"
