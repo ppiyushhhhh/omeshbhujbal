@@ -18,6 +18,7 @@ type Award = {
   title: string;
   year: string;
   organization: string;
+  presentedBy: string;
   description: string;
   images: AwardImage[];
 };
@@ -27,6 +28,7 @@ const awards: Award[] = [
     title: "CIO100 Award",
     year: "2024",
     organization: "19th CIO100 Awards & Symposium",
+    presentedBy: "IDC / CIO100 Awards & Symposium",
     description: "Recognized for technology leadership and enterprise transformation.",
     images: [
       {
@@ -44,9 +46,10 @@ const awards: Award[] = [
 type AwardCardProps = {
   award: Award;
   onOpen: () => void;
+  featured: boolean;
 };
 
-const AwardCard = ({ award, onOpen }: AwardCardProps) => {
+const AwardCard = ({ award, onOpen, featured }: AwardCardProps) => {
   const photoLabel = `${award.images.length} ${award.images.length === 1 ? "Photo" : "Photos"}`;
 
   return (
@@ -56,9 +59,9 @@ const AwardCard = ({ award, onOpen }: AwardCardProps) => {
         variant="ghost"
         onClick={onOpen}
         aria-label={`Open ${award.title} ${award.year} gallery`}
-        className="group h-auto w-full flex-col items-stretch justify-start rounded-none p-0 text-left hover:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className={`group h-auto w-full items-stretch justify-start whitespace-normal rounded-none p-0 text-left hover:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${featured ? "grid md:grid-cols-2" : "flex-col"}`}
       >
-        <span className="relative block aspect-[16/10] w-full overflow-hidden bg-muted sm:aspect-[3/2]">
+        <span className={`relative block w-full overflow-hidden bg-muted ${featured ? "aspect-[16/10] md:aspect-auto md:min-h-[24rem]" : "aspect-[16/10] sm:aspect-[3/2]"}`}>
           <img
             src={award.images[0]?.src}
             alt={award.images[0]?.alt ?? `${award.title} ${award.year}`}
@@ -71,7 +74,7 @@ const AwardCard = ({ award, onOpen }: AwardCardProps) => {
           </span>
         </span>
 
-        <span className="grid w-full gap-6 p-6 sm:grid-cols-[1fr_auto] sm:p-7 md:p-8">
+        <span className={`grid w-full gap-6 p-6 sm:p-7 md:p-8 ${featured ? "content-center sm:grid-cols-[1fr_auto] md:grid-cols-1 md:p-10 lg:p-12" : "sm:grid-cols-[1fr_auto]"}`}>
           <span className="block min-w-0">
             <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
               {award.organization}
@@ -81,6 +84,9 @@ const AwardCard = ({ award, onOpen }: AwardCardProps) => {
             </span>
             <span className="mt-4 block max-w-2xl text-sm font-normal leading-relaxed text-muted-foreground sm:text-base">
               {award.description}
+            </span>
+            <span className="mt-6 block text-[10px] font-semibold uppercase leading-relaxed tracking-[0.16em] text-muted-foreground">
+              Presented by {award.presentedBy}
             </span>
           </span>
           <span className="block self-start font-serif text-3xl leading-none text-primary sm:text-4xl">
@@ -191,12 +197,13 @@ const AwardsSection = () => {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className={`grid grid-cols-1 gap-6 ${awards.length === 1 ? "" : "md:grid-cols-2 xl:grid-cols-3"}`}>
             {awards.map((award, index) => (
               <AwardCard
                 key={`${award.title}-${award.year}`}
                 award={award}
                 onOpen={() => openAward(index)}
+                featured={awards.length === 1}
               />
             ))}
           </div>
